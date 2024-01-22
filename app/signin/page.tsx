@@ -1,11 +1,11 @@
 'use client'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup"
 import {motion} from "framer-motion" 
 import DecorateBackground from "../../components/decorateBackground";
 import { loginOrganizationSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
+import Link from "next/link";
 export default function Login() {
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
@@ -19,7 +19,7 @@ export default function Login() {
   return (
     <section className="relative overflow-hidden">
       <DecorateBackground/>
-      <div className="h-screen flex flex-row justify-center items-center bg-primary-50 ">
+      <div className="h-screen flex flex-row justify-center items-center bg-white ">
         <div className="w-[897px] h-[797px] bg-white rounded-3xl shadow-thin flex flex-row justify-center items-center z-40 ">
           <div className="">
             <p className="text-gray-100 light20">Welcome to <span className="medium24 text-primary-400">ProveSelf</span></p>
@@ -44,7 +44,7 @@ export default function Login() {
                   <p className="regular18">Password</p>
                   <div className="flex flex-col gap-1">
                     <input 
-                        type="text" 
+                        type="password" 
                         className={`w-[476px] h-[46px] input ${errors?.password?.type && "border-red border-2 focus:border-red focus:border-2"}`}
                         placeholder="example@gmail.com"
                         {...register("password")}
@@ -59,11 +59,12 @@ export default function Login() {
                   <motion.button type="submit" className=" w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] hover:bg-primary-500 focus:ring-4 focus:ring-primary-200"
                     whileTap={{ scale: 1.05 }}
                     whileFocus={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.05 }}
                   >
                     SIGN IN
                     <img src="/Arrow.svg" alt="arrow" />
                   </motion.button>
-                  <p className="light16 text-gray-200">I don't have an account ? <span className="text-primary-400 underline cursor-pointer">Sign up</span></p>
+                  <p className="light16 text-gray-200">I don't have an account ? <Link href="/signup" className="text-primary-400 underline cursor-pointer">Sign up</Link></p>
                 </div>
               </form>
             </div>
