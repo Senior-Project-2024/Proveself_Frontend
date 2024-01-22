@@ -1,27 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Pridi:wght@300;400;500;700&family=Rubik:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    font-size: 16px;
+    color: #292929;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components{
+    .light14{
+        @apply text-[14px] leading-[20px] font-light;
+    }
+    .light16{
+        @apply text-[16px] leading-[24px] font-light;
+    }
+    .light18{
+        @apply text-[18px] leading-[28px] font-light;
+    }
+    .light20{
+        @apply text-[20px] leading-[30px] font-light;
+    }
+    .light24{
+        @apply text-[24px] leading-[32px] font-light;
+    }
+    .light30{
+        @apply text-[30px] leading-[38px] font-light;
+    }
+    .light36{
+        @apply text-[36px] leading-[44px] font-light;
+    }
+    .regular14{
+        @apply text-[14px] leading-[20px] font-normal;
+    }
+    .regular16{
+        @apply text-[16px] leading-[24px] font-normal;
+    }
+    .regular18{
+        @apply text-[18px] leading-[28px] font-normal;
+    }
+    .regular20{
+        @apply text-[20px] leading-[30px] font-normal;
+    }
+    .regular24{
+        @apply text-[24px] leading-[32px] font-normal;
+    }
+    .regular30{
+        @apply text-[30px] leading-[38px] font-normal;
+    }
+    .regular36{
+        @apply text-[36px] leading-[44px] font-normal;
+    }
+    .medium14{
+        @apply text-[14px] leading-[20px] font-medium;
+    }
+    .medium16{
+        @apply text-[16px] leading-[24px] font-medium;
+    }
+    .medium18{
+        @apply text-[18px] leading-[28px] font-medium;
+    }
+    .medium20{
+        @apply text-[20px] leading-[30px] font-medium;
+    }
+    .medium24{
+        @apply text-[24px] leading-[32px] font-medium;
+    }
+    .medium30{
+        @apply text-[30px] leading-[38px] font-medium;
+    }
+    .medium36{
+        @apply text-[36px] leading-[44px] font-medium;
+    }
+    .bold14{
+        @apply text-[14px] leading-[20px] font-bold;
+    }
+    .bold16{
+        @apply text-[16px] leading-[24px] font-bold;
+    }
+    .bold18{
+        @apply text-[18px] leading-[28px] font-bold;
+    }
+    .bold20{
+        @apply text-[20px] leading-[30px] font-bold;
+    }
+    .bold24{
+        @apply text-[24px] leading-[32px] font-bold;
+    }
+    .bold30{
+        @apply text-[30px] leading-[38px] font-bold;
+    }
+    .bold36{
+        @apply text-[36px] leading-[44px] font-bold;
+    }
+    .input{
+      @apply bg-primary-100 rounded outline-none px-6 py-[11px] light16 focus:border focus:border-primary-500 ;
+    }
+    .blurpurple{
+      background: linear-gradient(180deg, rgba(31, 100, 255, 0.67) 11.65%, rgba(97, 57, 143, 0.70) 111.65%);
+      opacity: 0.78;
+      filter: blur(190px);
+    }
 }
