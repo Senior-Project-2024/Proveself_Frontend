@@ -9,6 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors:{
+          'brand-25' : '#FCFAFF',
+          'brand-50' : '#F9F5FF',
+          'brand-100' : '#F4EBFF',
+          'brand-200' : '#E9D7FE',
+          'brand-300' : '#D6BBFB',
+          'brand-400' : '#B692F6',
+          'brand-500' : '#9E77ED',
+          'brand-600' : '#7F56D9',
+          'brand-700' : '#6941C6',
+          'brand-800' : '#53389E',
+          'brand-900' : '#42307D',
           'primary-50' : '#F5F3F7',
           'primary-100' : '#E9E4ED',
           'primary-200' : '#D6C6E1',
