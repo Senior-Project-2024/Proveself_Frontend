@@ -1,8 +1,6 @@
 'use client'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup"
-import {motion} from "framer-motion" 
 import DecorateBackground from "../../../components/decorateBackground";
 import { loginOrganizationSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
@@ -38,8 +36,8 @@ export default function LoginOrganization() {
                   <div className="flex flex-col gap-1">
                     <input 
                         type="text" 
-                        className={`w-[476px] h-[46px] input ${errors?.email?.type && "border-red border-2 focus:border-red focus:border-2"}`}
-                        placeholder="example@gmail.com"
+                        className={`w-[476px] h-[46px] input ${errors?.email?.type && "input-fail"}`}
+                        placeholder="example@organize.ac.th"
                         autoFocus
                         {...register("email")}
                     />
@@ -52,8 +50,8 @@ export default function LoginOrganization() {
                   <div className="flex flex-col gap-1">
                     <input 
                         type="password" 
-                        className={`w-[476px] h-[46px] input ${errors?.password?.type && "border-red border-2 focus:border-red focus:border-2"}`}
-                        placeholder="example@gmail.com"
+                        className={`w-[476px] h-[46px] input ${errors?.password?.type && "input-fail"}`}
+                        placeholder="***********"
                         {...register("password")}
                     />
                     <div className="flex flex-row justify-between">
@@ -63,13 +61,14 @@ export default function LoginOrganization() {
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-5  mt-[20px]">
-                  <motion.button type="submit" className=" w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] hover:bg-primary-500 focus:ring-4 focus:ring-primary-200"
-                    whileTap={{ scale: 1.05 }}
-                    whileFocus={{ scale: 1.05 }}
+                  <button type="submit" 
+                    disabled={(!watch().email || !watch().password)}
+                    className="w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] 
+                      transition hover:bg-primary-500 hover:scale-105 hover:ease-in-out hover:duration-300
+                    disabled:bg-gray-100 disabled:scale-100"
                   >
-                    SIGN IN
-                    <img src="/Arrow.svg" alt="arrow" />
-                  </motion.button>
+                    SIGN IN<img src="/Arrow.svg" alt="arrow" />
+                  </button>
                   <p className="light16 text-gray-200">I don't have an account ? <Link href="/organization/signup" className="text-primary-400 underline cursor-pointer">Sign up</Link></p>
                 </div>
               </form>

@@ -1,5 +1,5 @@
 import './globals.css'
-
+import { ChakraProvider } from '@chakra-ui/react'
 export default function RootLayout({
   children,
 }: {
@@ -7,10 +7,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/Server.png" />
+      </head>
       <body>
-        {/* <div>Topic</div> */}
-        {children}
-        </body>
+        <ChakraProvider>
+          {children}  
+        </ChakraProvider>
+      </body>
     </html>
   )
 }

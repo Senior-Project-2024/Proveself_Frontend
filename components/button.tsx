@@ -9,22 +9,29 @@ interface Ibutton {
   px? : string,
   py? : string,
   rounded? : string,
-  children? : React.ReactNode
+  border?:string
+  borderColor?: string,
+  children? : React.ReactNode,
+  link? : string,
 }
 
-export default function Button({text , textColor = "white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", children} : Ibutton) {
+export default function Button({text , textColor = "text-white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", border = "", borderColor = "" , children, link=""} : Ibutton) {
   const classStr = classNames("w-auto h-auto flex flex-row justify-center items-center", 
     bgcolor,
     px,
     py,
     rounded,
-    gap
+    gap,
+    border,
+    borderColor
   );
   
   return (
-    <button className={classStr}>
-      {children}
-      <Link href="/" className={` text-${textColor} ${font}`}>{text}</Link>
-    </button>
+    <Link href={link}>
+      <button className={classStr}>
+        {children}
+        <p className={` ${textColor} ${font}`}>{text}</p>
+      </button>
+    </Link>
   )
 }

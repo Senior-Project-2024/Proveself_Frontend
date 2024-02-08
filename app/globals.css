@@ -101,7 +101,10 @@
         @apply text-[36px] leading-[44px] font-bold;
     }
     .input{
-      @apply bg-primary-100 rounded outline-none px-6 py-[11px] light16 focus:border focus:border-primary-500 ;
+      @apply bg-primary-100 rounded px-6 py-[11px] light16 focus:outline focus:outline-2 focus:outline-primary-500 ;
+    }
+    .input-fail{
+      @apply outline outline-red outline-2 focus:outline-red
     }
     .blurpurple{
       background: linear-gradient(180deg, rgba(31, 100, 255, 0.67) 11.65%, rgba(97, 57, 143, 0.70) 111.65%);

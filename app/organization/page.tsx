@@ -1,6 +1,8 @@
-
+import Navbar from "@/components/Navbars/Navbar"
 export default function Organization() {
   return (
-    <div>page</div>
+    <div>
+      <Navbar isUser={false}/>
+    </div>
   )
 }

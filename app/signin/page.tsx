@@ -3,19 +3,24 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {motion} from "framer-motion" 
 import DecorateBackground from "../../components/decorateBackground";
-import { loginOrganizationSchema } from "@/lib/ScemaYup";
+import { loginSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
 import Link from "next/link";
+import { useState } from "react";
+import { onSubmitFunction } from "./onSubmit";
 export default function Login() {
-
+  const [errorMessage, setErrorMessage] = useState<string>();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
       email : "example@gmail.com",
       password : "Meaw1234"
     },
-    resolver : yupResolver(loginOrganizationSchema)
+    resolver : yupResolver(loginSchema)
   });
-  const onSubmit: SubmitHandler<loginStateType> = (data) => alert(data.email);
+  
+  const onSubmit: SubmitHandler<loginStateType> = (data) => {
+    onSubmitFunction(data, setErrorMessage);
+  };
   return (
     <section className="relative overflow-hidden">
       <DecorateBackground/>
@@ -31,13 +36,12 @@ export default function Login() {
                   <div className="flex flex-col gap-1">
                     <input 
                         type="text" 
-                        className={`w-[476px] h-[46px] input ${errors?.email?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                        className={`w-[476px] h-[46px] input ${ (errorMessage) && "input-fail"}`}
                         placeholder="example@gmail.com"
                         autoFocus
                         {...register("email")}
                     />
                       <p className=" light16 text-red ">{errors?.email?.message}</p>
-                    
                   </div>
                 </div>
                 <div className="flex flex-col gap-[10px] mt-[20px] items-start">
@@ -45,25 +49,28 @@ export default function Login() {
                   <div className="flex flex-col gap-1">
                     <input 
                         type="password" 
-                        className={`w-[476px] h-[46px] input ${errors?.password?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                        className={`w-[476px] h-[46px] input ${ (errorMessage ) && "input-fail"}`}
                         placeholder="example@gmail.com"
                         {...register("password")}
                     />
-                    <div className="flex flex-row justify-between">
-                      <p className=" light16 text-red ">{errors?.password?.message}</p>
-                      <p className=" light16 text-primary-300 self-end mt-[6px] cursor-pointer">Forgot Password?</p>
+                    <div className="flex flex-row justify-between items-start">
+                      <div className="flex flex-col gap-2">
+                        <p className={`${!errors?.password?.message && "hidden" } light16 text-red `} >{errors?.password?.message}</p>
+                        <p className=" light16 text-red">{errorMessage}</p>
+                      </div>
+                      <p className=" light16 text-primary-300 mt-[6px] cursor-pointer">Forgot Password?</p>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-5  mt-[20px]">
-                  <motion.button type="submit" className=" w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] hover:bg-primary-500 focus:ring-4 focus:ring-primary-200"
-                    whileTap={{ scale: 1.05 }}
-                    whileFocus={{ scale: 1.05 }}
-                    whileHover={{ scale: 1.05 }}
+                  <button type="submit" 
+                    disabled={(!watch().email || !watch().password)}
+                    className="w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] 
+                    transition hover:bg-primary-500 hover:scale-105 hover:ease-in-out hover:duration-300
+                    disabled:bg-gray-100 disabled:scale-100"
                   >
-                    SIGN IN
-                    <img src="/Arrow.svg" alt="arrow" />
-                  </motion.button>
+                    SIGN IN <img src="/Arrow.svg" alt="arrow" />
+                  </button>
                   <p className="light16 text-gray-200">I don't have an account ? <Link href="/signup" className="text-primary-400 underline cursor-pointer">Sign up</Link></p>
                 </div>
               </form>

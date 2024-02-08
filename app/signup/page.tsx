@@ -40,21 +40,21 @@ export default function Register(){
           <form className="flex flex-col gap-[24px]"  onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-row gap-[40px]">
               <div className="flex flex-col gap-[10px] relative">
-                <p className="light18">First name</p>
+                <p className="regular18">First name</p>
                 <input 
                     type="text" 
-                    className={`w-[300px] h-[46px] input ${errors?.firstname?.type && "border-red border-2 focus:border-red focus:border-2"}`}
-                    placeholder="Myname"
+                    className={`w-[300px] h-[46px] input ${errors?.firstname?.type && "input-fail"}`}
+                    placeholder="Myfistname"
                     autoFocus
                     {...register("firstname")}
                 />
                 <p className="absolute light16 text-red top-[84px]">{errors?.firstname?.message}</p>
               </div>
               <div className="flex flex-col gap-[10px] relative">
-                <p className="light18">Last name</p>
+                <p className="regular18">Last name</p>
                 <input 
                     type="text" 
-                    className={`w-[300px] h-[46px] input ${errors?.lastname?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                    className={`w-[300px] h-[46px] input ${errors?.lastname?.type && "input-fail"}`}
                     placeholder="Mylastname"
                     autoFocus
                     {...register("lastname")}
@@ -64,12 +64,12 @@ export default function Register(){
             </div>
 
             <div className="flex flex-col gap-[10px] relative">
-              <p className="light18">Phone number</p>
+              <p className="regular18">Phone number</p>
               <InputMask
                   mask="999-999-9999" 
                   maskChar=""
                   type="text" 
-                  className={`w-[300px] h-[46px] input ${errors?.phone?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                  className={`w-[300px] h-[46px] input ${errors?.phone?.type && "input-fail"}`}
                   placeholder="099-123-4567"
                   autoFocus
                   {...register("phone")}
@@ -78,10 +78,10 @@ export default function Register(){
             </div>
 
             <div className="flex flex-col gap-[10px] relative">
-              <p className="light18">Email address</p>
+              <p className="regular18">Email address</p>
               <input 
                   type="text" 
-                  className={`w-[640px] h-[46px] input ${errors?.email?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                  className={`w-[640px] h-[46px] input ${errors?.email?.type && "input-fail"}`}
                   placeholder="example@gmail.com"
                   autoFocus
                   {...register("email")}
@@ -92,11 +92,11 @@ export default function Register(){
             <div className="flex flex-col gap-[2px]">
               <div className="flex flex-row gap-[40px]">
                 <div className="flex flex-col gap-[10px] relative">
-                  <p className="light18">Password</p>
+                  <p className="regular18">Password</p>
                   <div>
                     <input 
                         type="password" 
-                        className={`w-[300px] h-[46px] input ${errors?.password?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                        className={`w-[300px] h-[46px] input ${errors?.password?.type && "input-fail"}`}
                         placeholder="***********"
                         autoFocus
                         {...register("password")}
@@ -105,11 +105,11 @@ export default function Register(){
                   </div>
                 </div>
                 <div className="flex flex-col gap-[10px] relative">
-                  <p className="light18">Confirm Password</p>
+                  <p className="regular18">Confirm Password</p>
                   <div>
                     <input 
                         type="password" 
-                        className={`w-[300px] h-[46px] input ${errors?.confirmpassword?.type && "border-red border-2 focus:border-red focus:border-2"}`}
+                        className={`w-[300px] h-[46px] input ${errors?.confirmpassword?.type && "input-fail"}`}
                         placeholder="***********"
                         autoFocus
                         {...register("confirmpassword")}
@@ -122,13 +122,14 @@ export default function Register(){
             </div>
 
             <div className="flex flex-col items-center gap-5  mt-[20px]">
-              <motion.button type="submit" className=" w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] hover:bg-primary-500 focus:ring-4 focus:ring-primary-200"
-                whileTap={{ scale: 1.05 }}
-                whileFocus={{ scale: 1.05 }}
+              <button type="submit" 
+                disabled={(!watch().email || !watch().password || !watch().firstname || !watch().lastname || !watch().confirmpassword || !watch().phone)}
+                className="w-[150px] h-[46px] bg-primary-400 rounded-3xl text-white medium18 flex flex-row justify-center items-center gap-[20px] 
+                transition hover:bg-primary-500 hover:scale-105 hover:ease-in-out hover:duration-300
+              disabled:bg-gray-100 disabled:scale-100"
               >
-                SIGN IN
-                <img src="/Arrow.svg" alt="arrow" />
-              </motion.button>
+                SIGN UP <img src="/Arrow.svg" alt="arrow" />
+              </button>
               
             </div>
           </form>

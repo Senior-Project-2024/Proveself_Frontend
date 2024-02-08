@@ -1,4 +1,4 @@
-import Button from "@/components/button"
+import Button from "@/components/Button"
 export default function NotFound(){
   return(
     <section>
@@ -9,7 +9,7 @@ export default function NotFound(){
             <p className="light24 text-gray-200 text-center">We are sorry! The page you request can not be found. <br></br>
               Please go back to the homepage.</p>
           </div>
-          <Button text="Go Home">
+          <Button text="Go Home" link="/">
             <img src="/home.svg" alt="Home" />
           </Button>
       </div>
