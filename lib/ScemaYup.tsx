@@ -62,6 +62,12 @@ export const editProfileSchema = yup.object({
   .matches(phoneRegExp, "Phone number is not valid"),
 })
 
+export const editProfileOrganizeSchema = yup.object({
+  name : yup.string().required("Organization name is required"),
+  phone: yup.string().required("Phone number is required")
+  .matches(phoneRegExp, "Phone number is not valid"),
+})
+
 export const editPasswordSchema = yup.object({
   currentpassword : yup.string().required("Current password is required"),
   newpassword : yup.string().required("New password is required")

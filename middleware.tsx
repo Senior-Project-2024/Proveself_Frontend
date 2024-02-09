@@ -20,7 +20,6 @@ export async function middleware(request: NextRequest) {
   mockResponse.forEach((e)=>{
     if(e.role == "organize"){
       isFind = true;
-      return NextResponse.next()
     }
   })
 

@@ -25,6 +25,10 @@ export type editProfileType = {
   lastname : string;
   phone : string;
 }
+export type editProfileOrganizeType = {
+  name : string;
+  phone : string
+}
 
 export type editPasswordType = {
   currentpassword : string;

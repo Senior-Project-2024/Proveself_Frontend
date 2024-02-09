@@ -43,8 +43,6 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
             setAuthOrganization(true)
           }
         })
-        console.log(authUser + " - " + authOrganization);
-
       })
       .catch((error)=>{
         // authentication fail
@@ -182,7 +180,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
     </motion.nav>
     {
       openSetting && 
-      <ModalSetting setOpenSetting={setOpenSetting} />
+      <ModalSetting setOpenSetting={setOpenSetting} isUser={isUser} />
     }
     </div>
   )
