@@ -7,9 +7,9 @@ import { usePathname, useRouter } from 'next/navigation'
 import { IstatusNav, IstatusNavOrganization } from '@/lib/type/navbarType'
 import { dataNavOrganization, dataNavUser } from '@/lib/data/dataNav'
 import { checkRoute} from './checkRoute'
-import { getCookie, setCookie } from 'cookies-next'
-import ModalSetting from './ModalSetting'
+import ModalSetting from '../ModalSetting'
 import axios from 'axios'
+import ModalConfirmEmail from '../ModalConfirmEmail'
 
 export default function Navbar({isUser = true} : {isUser : boolean}) {
   const pathname = usePathname();
@@ -20,6 +20,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
   const [authOrganization, setAuthOrganization] = useState<boolean>();
   const [openMenu, setOpenMenu] = useState<boolean>(true);
   const [openSetting, setOpenSetting] = useState<boolean>(false);
+  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(true);
   const mockResponse = [
     {role : "user"},
     {role : "organize"}
@@ -68,12 +69,12 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
   },[])
 
 
-  if(authUser === undefined || authOrganization === undefined){
+  // if(authUser === undefined || authOrganization === undefined){
    // return <nav className="fixed w-full h-[90px] top-0 left-0  bg-white shadow-thin-more flex flex-row items-center animate-pulse px-[120px]">
     //   <div className="bg-gray-200 rounded-[10px] w-[235px] h-[56px]"></div>
     // </nav>
-    return <nav></nav>
-  }
+  //   return <nav></nav>
+  // }
 
   return (
     <div>
@@ -179,8 +180,10 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
       </div>
     </motion.nav>
     {
-      openSetting && 
-      <ModalSetting setOpenSetting={setOpenSetting} isUser={isUser} />
+      openSetting && <ModalSetting setOpenSetting={setOpenSetting} isUser={isUser} />
+    }
+    {
+      openConfirmEmail && <ModalConfirmEmail setConfirmEmail={setOpenConfirmEmail} email={"Meaw"} typeConfirm={'default'}/>
     }
     </div>
   )

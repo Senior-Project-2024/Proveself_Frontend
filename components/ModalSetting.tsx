@@ -1,7 +1,7 @@
 'use client'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Modal from "../Modal"
+import Modal from "./Modal"
 import { editProfileType, editPasswordType, editProfileOrganizeType } from "@/lib/type/useForm";
 import { editPasswordSchema, editProfileOrganizeSchema, editProfileSchema } from "@/lib/ScemaYup";
 import InputMask from "react-input-mask";

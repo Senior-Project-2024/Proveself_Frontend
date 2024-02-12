@@ -1,14 +1,18 @@
 'use client'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {motion} from "framer-motion" 
 import DecorateBackground from "../../components/decorateBackground";
 import { loginSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
 import Link from "next/link";
-import { useState } from "react";
-import { onSubmitFunction } from "./onSubmit";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import ModalConfirmEmail from "@/components/ModalConfirmEmail";
+
 export default function Login() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
@@ -17,9 +21,18 @@ export default function Login() {
     },
     resolver : yupResolver(loginSchema)
   });
+  type ItypeConfirm = "default" | "success" | "fail";
+  useEffect(()=>{
+    (searchParams.get("email") && searchParams.get("typeConfirm")) && setOpenConfirmEmail(true);
+  },[])
   
   const onSubmit: SubmitHandler<loginStateType> = (data) => {
-    onSubmitFunction(data, setErrorMessage);
+    if(data.email == "example@gmail.com" && data.password == "Meaw1234"){
+      // call api 
+      router.push(`/`)
+    }else{
+      setErrorMessage("Incorrect email or password");
+    }
   };
   return (
     <section className="relative overflow-hidden">
@@ -78,7 +91,10 @@ export default function Login() {
           </div>
         </div>
       </div>
+      {
+        openConfirmEmail && 
+        <ModalConfirmEmail setConfirmEmail={setOpenConfirmEmail} email={searchParams.get("email") as string} typeConfirm={searchParams.get("typeConfirm") as ItypeConfirm} />
+      }
     </section>
-   
   )
 }

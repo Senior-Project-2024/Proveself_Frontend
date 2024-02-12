@@ -1,21 +1,23 @@
 'use client'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {motion} from "framer-motion" 
 import DecorateBackground from "@/components/decorateBackground"
 import { registerSchema } from "@/lib/ScemaYup";
 import { registerStateType } from "@/lib/type/useForm";
 import InputMask from "react-input-mask";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Register(){
-
+  const router = useRouter();
+  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
   const { register, handleSubmit, watch, formState: { errors } } = useForm<registerStateType>({
     defaultValues : {
-      firstname : "",
-      lastname : "",
-      phone: "",
-      email : "example@gmail.com",
+      firstname : "Pathinya",
+      lastname : "Jongsupangpan",
+      phone: "081345789",
+      email : "pathinya@gmail.com",
       password : "Meaw1234",
       confirmpassword : "Meaw1234"
     },
@@ -23,8 +25,13 @@ export default function Register(){
   });
 
   const onSubmit: SubmitHandler<registerStateType> = (data) => {
-    alert(data.email)
-    console.log(watch())
+    // Post add user and send Email
+    const res = false;
+    if(res){
+      router.push(`/signin?email=${data.email}&typeConfirm=success`)
+    }else{
+      router.push(`/signin?email=${data.email}&typeConfirm=fail`)
+    }
   };
   return(
     <section className="relative overflow-hidden">
@@ -68,9 +75,10 @@ export default function Register(){
               <InputMask
                   mask="999-999-9999" 
                   maskChar=""
+                  defaultValue={watch().phone}
                   type="text" 
                   className={`w-[300px] h-[46px] input ${errors?.phone?.type && "input-fail"}`}
-                  placeholder="099-123-4567"
+                  placeholder="0xx-xxx-xxxx"
                   autoFocus
                   {...register("phone")}
               />
