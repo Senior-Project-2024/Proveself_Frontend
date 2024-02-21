@@ -15,7 +15,7 @@ interface IModalSetting{
   isUser: boolean
 }
 
-export default function ModalSetting({ setOpenSetting, isUser } : IModalSetting ) {
+export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModalSetting> ) {
   const toast = useToast()
   const [errorSubmitPassword, setErrorSubmitPassword] = useState();
   const toastIdRef = useRef<any>(null)
@@ -67,7 +67,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : IModalSetting 
 
   const onSubmit: SubmitHandler<editProfileType> = async (data) => {
     toastIdRef.current = toast({
-    title: 'Profie updated.',
+    title: 'Profile updating...',
     description: "Loading",
     status: 'loading',
     duration: 9000,
@@ -81,8 +81,8 @@ export default function ModalSetting({ setOpenSetting, isUser } : IModalSetting 
       setCookie("data-user", {...storeDataUser, fName : data.firstname, lName : data.lastname, telNo : data.phone});
       // Notification change loading to success 
       toast.update(toastIdRef.current,{
-        title: 'Profie updating...',
-        description: "We've updated your profie successful.",
+        title: 'Profile updating...',
+        description: "We've updated your profile successful.",
         status: 'success',
         duration: 5000,
         isClosable: true,
@@ -102,7 +102,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : IModalSetting 
 
   const onSubmitOrganize: SubmitHandler<editProfileOrganizeType> = async (data) => {
     toastIdRef.current = toast({
-    title: 'Profie updating...',
+    title: 'Profile updating...',
     description: "Loading",
     status: 'loading',
     duration: 9000,
@@ -116,8 +116,8 @@ export default function ModalSetting({ setOpenSetting, isUser } : IModalSetting 
       setCookie("data-organization", {...storeDataOrganize, name : data.name, telNo : data.phone});
       // Notification change loading to success 
       toast.update(toastIdRef.current,{
-        title: 'Profie organization updated.',
-        description: "We've updated your profie successful.",
+        title: 'Profile organization updated.',
+        description: "We've updated your profile successful.",
         status: 'success',
         duration: 5000,
         isClosable: true,

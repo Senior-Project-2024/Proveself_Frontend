@@ -3,28 +3,27 @@ import React, { useEffect, useState } from 'react'
 import Button from '../Button'
 import Link from 'next/link'
 import {easeIn, easeInOut, easeOut, motion} from "framer-motion"
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { IstatusNav, IstatusNavOrganization } from '@/lib/type/navbarType'
 import { dataNavOrganization, dataNavUser } from '@/lib/data/dataNav'
 import { checkRoute} from './checkRoute'
 import ModalSetting from '../ModalSetting'
 import axios from 'axios'
 import ModalConfirmEmail from '../ModalConfirmEmail'
+import { useContext } from 'react'
+import { AuthContext } from '@/context/AuthContext'
 
 export default function Navbar({isUser = true} : {isUser : boolean}) {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const {statusAuth, setStatusAuth} = useContext(AuthContext);
   const [statusNav, setStatusNav] = useState<IstatusNav | IstatusNavOrganization>();
   const [statusNavOrganization, setStatusNavOrganization] = useState<IstatusNav | IstatusNavOrganization>();
-  const [authUser, setAuthUser] = useState<boolean>();
-  const [authOrganization, setAuthOrganization] = useState<boolean>();
-  const [openMenu, setOpenMenu] = useState<boolean>(true);
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [openSetting, setOpenSetting] = useState<boolean>(false);
-  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(true);
-  const mockResponse = [
-    {role : "user"},
-    {role : "organize"}
-  ]
+  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
+  type ItypeConfirm = "default" | "success" | "fail";
 
   useEffect(()=>{
     const callAPI = async () => {
@@ -33,17 +32,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
         // email : personal.email
       })
       .then((res)=>{
-        // default authen
-        setAuthUser(false)
-        setAuthOrganization(false)
-        mockResponse.forEach((e)=>{
-          if(e.role == "user"){
-            setAuthUser(true)
-          }
-          if(e.role == "organize"){
-            setAuthOrganization(true)
-          }
-        })
+        
       })
       .catch((error)=>{
         // authentication fail
@@ -55,21 +44,14 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
       })
     }
     // callAPI();
-    setAuthUser(false)
-        setAuthOrganization(false)
-        mockResponse.forEach((e)=>{
-          if(e.role == "user"){
-            setAuthUser(true)
-          }
-          if(e.role == "organize"){
-            setAuthOrganization(true)
-          }
-        })
     checkRoute(pathname, setStatusNav, setStatusNavOrganization);
+    if(searchParams.get("email")){
+      setOpenConfirmEmail(true);
+    }
   },[])
 
 
-  // if(authUser === undefined || authOrganization === undefined){
+  // if(statusAuth?.isUserAuth === undefined || authOrganization === undefined){
    // return <nav className="fixed w-full h-[90px] top-0 left-0  bg-white shadow-thin-more flex flex-row items-center animate-pulse px-[120px]">
     //   <div className="bg-gray-200 rounded-[10px] w-[235px] h-[56px]"></div>
     // </nav>
@@ -85,7 +67,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
       <Link href={ isUser ? "/" : "/organization"}>
         <img src="/logo.png" alt="" className="w-[235px] h-[56px] cursor-pointer"/>
       </Link>
-      <div className={`flex flex-row regular20 gap-[40px] ${ (isUser && !authUser)  && "ml-[80px]"} `}>
+      <div className={`flex flex-row regular20 gap-[40px] ${ (isUser && !statusAuth?.isUserAuth)  && "ml-[80px]"} `}>
         {/* Menu button */}
         {
           isUser ?
@@ -114,7 +96,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
       </div>
       <div className="flex flex-row gap-[38px] items-center">
         {
-          (isUser && !authUser) &&
+          (isUser && !statusAuth?.isUserAuth) &&
           <button onClick={()=>router.push("/organization")} className="flex flex-row h-full justify-center items-center border border-black pl-[12px] pr-[15px] py-[4px] rounded-[10px]  gap-[6px]">
           <img src="/arrow-slant.svg" alt="arrow-slant" className="" />
           <p className="regular18">Organization</p>
@@ -124,7 +106,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
         <div className="flex flex-row gap-[10px]">
           {/*If auth show name and email*/}
           {
-            (isUser && authUser) || (!isUser && authOrganization) ? 
+            (isUser && statusAuth?.isUserAuth) || (!isUser && statusAuth?.isOrganizeAuth) ? 
             <div className="flex flex-row items-center gap-[10px] relative">
               <div className="flex flex-row gap-[12px]"> {/* profile + fullname */}
                 <div className="flex justify-center items-center w-[45px] h-[45px] rounded-[40px] outline outline-[3px] outline-[#F4EBFF] bg-black">
@@ -181,9 +163,6 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
     </motion.nav>
     {
       openSetting && <ModalSetting setOpenSetting={setOpenSetting} isUser={isUser} />
-    }
-    {
-      openConfirmEmail && <ModalConfirmEmail setConfirmEmail={setOpenConfirmEmail} email={"Meaw"} typeConfirm={'default'}/>
     }
     </div>
   )

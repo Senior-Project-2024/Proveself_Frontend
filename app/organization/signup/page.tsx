@@ -1,28 +1,73 @@
 'use client'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {motion} from "framer-motion" 
 import DecorateBackground from "@/components/decorateBackground"
 import { registerOrganizationStateType } from "@/lib/type/useForm";
 import { registerOrganizationchema } from "@/lib/ScemaYup";
 import Link from "next/link";
 import InputMask from "react-input-mask"
+import { useToast } from "@chakra-ui/react";
+import { useRef } from "react";
+import { useRouter } from "next/navigation";
+import { API_signup } from "@/lib/API";
 
 export default function RegisterOrganization(){
-
+  const toast = useToast()
+  const router = useRouter();
+  const toastIdRef = useRef<any>(null)
   const { register, handleSubmit, watch, formState: { errors } } = useForm<registerOrganizationStateType>({
     defaultValues : {
-      name : "",
-      phone: "",
-      email : "example@gmail.com",
+      name : "CourseX",
+      phone: "028888888",
+      email : "corporateX@mail.com",
       password : "Meaw1234",
-      confirmpassword : ""
+      confirmpassword : "Meaw1234"
     },
     resolver : yupResolver(registerOrganizationchema)
   });
 
-  const onSubmit: SubmitHandler<registerOrganizationStateType> = (data) => {
-    alert(data.email)
+  const onSubmit: SubmitHandler<registerOrganizationStateType> = async (data) => {
+    toastIdRef.current = toast({
+      title: 'Registering...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
+    })
+    try {
+      const res = await API_signup("user",data.email, "", "", "", data.password, data.phone.split("-").join(""));
+      console.log(res)
+      toast.update(toastIdRef.current,{
+        title: 'Register successful.',
+        description: "We've create your account successful.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+      router.push(`/signin?email=${data.email}&typeConfirm=default`)
+    }catch(err){
+      console.log(err.response)
+      // Show error
+      if(typeof err.response.data.message != "string"){
+        err.response.data.message.forEach( (element : string) => {
+          toast.update(toastIdRef.current,{
+            title: 'Register Fail.' ,
+            description: element,
+            status: 'error',
+            duration: 10000,
+            isClosable: true,
+          })
+        });
+      }else{
+        toast.update(toastIdRef.current,{
+          title: 'Register Fail.' ,
+          description: err.response.data.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        })
+      }
+    }
   };
   return(
     <section className="relative overflow-hidden">

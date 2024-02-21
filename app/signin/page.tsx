@@ -14,6 +14,7 @@ export default function Login() {
   const searchParams = useSearchParams()
   const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+  type ItypeConfirm = "default" | "success" | "fail";
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
       email : "example@gmail.com",
@@ -21,17 +22,21 @@ export default function Login() {
     },
     resolver : yupResolver(loginSchema)
   });
-  type ItypeConfirm = "default" | "success" | "fail";
+  
   useEffect(()=>{
     (searchParams.get("email") && searchParams.get("typeConfirm")) && setOpenConfirmEmail(true);
   },[])
   
   const onSubmit: SubmitHandler<loginStateType> = (data) => {
+    console.log(data)
+    setErrorMessage("");
     if(data.email == "example@gmail.com" && data.password == "Meaw1234"){
       // call api 
       router.push(`/`)
+      
     }else{
-      setErrorMessage("Incorrect email or password");
+      // if(error.data == "email has not been confirmed")
+      setErrorMessage("Your email has not been confirmed");
     }
   };
   return (
@@ -54,7 +59,7 @@ export default function Login() {
                         autoFocus
                         {...register("email")}
                     />
-                      <p className=" light16 text-red ">{errors?.email?.message}</p>
+                    <p className=" light16 text-red ">{errors?.email?.message}</p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-[10px] mt-[20px] items-start">

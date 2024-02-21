@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Modal from "./Modal";
-import { useRouter } from "next/navigation";
-
+import { useRouter, usePathname } from "next/navigation";
 interface IModalConfirmEmail{
   setConfirmEmail : any
   email: string
   typeConfirm : "default" | "success" | "fail"
+  
 }
 
 export default function ModalConfirmEmail({setConfirmEmail, email, typeConfirm} : IModalConfirmEmail){
   const router = useRouter(); 
+  const path = usePathname();
   const [thisTypeConfirm, setThisTypeConfirm] = useState<"default" | "success" | "fail">(typeConfirm);
-  
   const resendEmail = () => {
     // call send email
     // if send success

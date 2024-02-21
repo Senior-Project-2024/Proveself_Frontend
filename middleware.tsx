@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   let isAuthOrganization: boolean = false;
   const mockResponse : {role : string}[] = [
     // {role : "user"},
-    // {role : "organize"}
+    {role : "organize"}
   ]
 
   // set isAuthUser and usAuthOrganization

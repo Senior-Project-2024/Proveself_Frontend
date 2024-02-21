@@ -42,10 +42,15 @@ const config: Config = {
           thin: "0px 8px 24px 0px rgba(36, 42, 56, 0.20)",
           'thin-more': "0px 6px 10px 0px rgba(36, 42, 56, 0.20)",
       },
+      animation : {
+        'animate-pulse-1' : 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+        // animate-pulse	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
     },
     fontFamily: {
         Rubik : ["Rubik", "sans-serif"], 
         Pridi : ["Pridi", "serif"], 
+        Signika: ["Signika", "sans-serif"]
     }
   },
   plugins: [

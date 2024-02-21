@@ -2,22 +2,41 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import DecorateBackground from "../../../components/decorateBackground";
-import { loginOrganizationSchema } from "@/lib/ScemaYup";
+import { loginSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import ModalConfirmEmail from "@/components/ModalConfirmEmail";
+import { API_signin, API_updatePassword } from "@/lib/API";
 export default function LoginOrganization() {
-
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  type ItypeConfirm = "default" | "success" | "fail";
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
-      email : "example@gmail.com",
+      email : "example@mail.com",
       password : "Meaw1234"
     },
-    resolver : yupResolver(loginOrganizationSchema)
+    resolver : yupResolver(loginSchema)
   });
 
-  const onSubmit: SubmitHandler<loginStateType> = (data) => {
-    alert(data.email)
+  useEffect(()=>{
+    (searchParams.get("email") && searchParams.get("typeConfirm")) && setOpenConfirmEmail(true);
+  },[])
+
+  const onSubmit: SubmitHandler<loginStateType> = async (data) => {
+    // call api
+    try{
+      const res = await API_signin("organize", data.email, data.password);
+      console.log(res)
+    }catch(error){
+      console.log(error.response)
+      // set
+      setErrorMessage("Your email has not been confirmed");
+    }
   };
 
   return (
@@ -36,13 +55,12 @@ export default function LoginOrganization() {
                   <div className="flex flex-col gap-1">
                     <input 
                         type="text" 
-                        className={`w-[476px] h-[46px] input ${errors?.email?.type && "input-fail"}`}
+                        className={`w-[476px] h-[46px] input ${errorMessage && "input-fail"}`}
                         placeholder="example@organize.ac.th"
                         autoFocus
                         {...register("email")}
                     />
                       <p className=" light16 text-red ">{errors?.email?.message}</p>
-                    
                   </div>
                 </div>
                 <div className="flex flex-col gap-[10px] mt-[20px] items-start">
@@ -50,13 +68,16 @@ export default function LoginOrganization() {
                   <div className="flex flex-col gap-1">
                     <input 
                         type="password" 
-                        className={`w-[476px] h-[46px] input ${errors?.password?.type && "input-fail"}`}
+                        className={`w-[476px] h-[46px] input ${errorMessage && "input-fail"}`}
                         placeholder="***********"
                         {...register("password")}
                     />
-                    <div className="flex flex-row justify-between">
-                      <p className=" light16 text-red ">{errors?.password?.message}</p>
-                      <p className=" light16 text-primary-300 self-end mt-[6px] cursor-pointer">Forgot Password?</p>
+                    <div className="flex flex-row justify-between items-start">
+                      <div className="flex flex-col gap-2">
+                        <p className={`${!errors?.password?.message && "hidden" } light16 text-red `} >{errors?.password?.message}</p>
+                        <p className=" light16 text-red">{errorMessage}</p>
+                      </div>
+                      <p className=" light16 text-primary-300 mt-[6px] cursor-pointer">Forgot Password?</p>
                     </div>
                   </div>
                 </div>
@@ -76,6 +97,10 @@ export default function LoginOrganization() {
           </div>
         </div>
       </div>
+      {
+        openConfirmEmail && 
+        <ModalConfirmEmail setConfirmEmail={setOpenConfirmEmail} email={searchParams.get("email") as string} typeConfirm={searchParams.get("typeConfirm") as ItypeConfirm} />
+      }
     </section>
    
   )

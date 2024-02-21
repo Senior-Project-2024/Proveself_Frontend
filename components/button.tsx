@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link"
 import classNames from "classnames"
 interface Ibutton {
@@ -13,9 +14,10 @@ interface Ibutton {
   borderColor?: string,
   children? : React.ReactNode,
   link? : string,
+  onclick? : () => void,
 }
 
-export default function Button({text , textColor = "text-white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", border = "", borderColor = "" , children, link=""} : Ibutton) {
+export default function Button({text , textColor = "text-white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", border = "", borderColor = "" , children, link="", onclick} : Ibutton) {
   const classStr = classNames("w-auto h-auto flex flex-row justify-center items-center", 
     bgcolor,
     px,
@@ -28,7 +30,7 @@ export default function Button({text , textColor = "text-white", font = "medium2
   
   return (
     <Link href={link}>
-      <button className={classStr}>
+      <button className={classStr} onClick={onclick}>
         {children}
         <p className={` ${textColor} ${font}`}>{text}</p>
       </button>
