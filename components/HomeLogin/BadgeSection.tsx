@@ -8,6 +8,7 @@ import Link from "next/link";
 import LeftFlower from "../SVG/LeftFlower";
 import RightFlower from "../SVG/RightFlower";
 import Star5 from "../SVG/Star5";
+import BadgeSectionNoData from "./BadgeSectionNoData";
 export default function BadgeSection() {
   const [currentBadge, setCurrentBadge] = useState<number>(0);
   const settings2 = {
@@ -22,6 +23,7 @@ export default function BadgeSection() {
     prevArrow: <PrevArrow classname="hover:fill-black" currentSlide={currentBadge} setCurrentSlide={setCurrentBadge} maxSlide={mockBadge.length - 1}/>
   };
   return (
+    mockBadge.length != 0 ? 
     <section className="flex flex-col items-center pt-[62px] pb-[37px]">
       <div className="flex flex-row gap-[25px] mb-[45px]">
         <LeftFlower fill="black" />
@@ -63,5 +65,8 @@ export default function BadgeSection() {
       </div>
       <Link href={"/badge"} className="regular24 underline mt-[55px]">View all badge</Link>
     </section>
+    :
+    <BadgeSectionNoData/>
+    
   );
 }

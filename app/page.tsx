@@ -11,12 +11,7 @@ import CertificateSection from "@/components/HomeLogin/CertificateSection"
 import BadgeSection from "@/components/HomeLogin/BadgeSection"
 
 export default function Home() {
-  const {statusAuth, setStatusAuth} = useContext(AuthContext);
-  const mockResponse = [
-    {role : "user"},
-    {role : "organize"}
-  ]
-
+  const {statusAuth} = useContext(AuthContext);
   if(statusAuth?.isUserAuth == undefined){
     return <div></div>
   }
@@ -26,7 +21,7 @@ export default function Home() {
         <Navbar isUser={true} />
         {
           statusAuth?.isUserAuth ?
-          <div className="pt-[100px]">
+          <div className="pt-[90px]">
            <BadgeSection />
            <CertificateSection/>
           </div>
@@ -39,7 +34,6 @@ export default function Home() {
           </div>
         }
         <Footer/>
-        
     </>
   )
 }

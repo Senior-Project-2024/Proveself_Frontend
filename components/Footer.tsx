@@ -3,7 +3,7 @@ import Button from "./Button"
 
 export default function Footer() {
   return (
-    <section className="bg-blue-300 mt-[82px] rounded-t-[80px] flex flex-col items-center gap-[56px] text-white pt-[62px] pb-[43px]">
+    <section className="bg-blue-300 mt-[82px] rounded-t-[80px] w-full flex flex-col items-center gap-[56px] text-white pt-[62px] pb-[43px]">
       <div className="flex flex-row gap-[330px]">
         <div className="flex flex-col gap-[26px]">
           <div className="flex flex-row items-center gap-[6px]">

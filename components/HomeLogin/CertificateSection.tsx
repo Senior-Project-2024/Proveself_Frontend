@@ -9,6 +9,7 @@ import LeftFlower from "../SVG/LeftFlower";
 import RightFlower from "../SVG/RightFlower";
 import Star5 from "../SVG/Star5";
 import SmallFrame from "../SVG/SmallFrame";
+import CertificateSectionNoData from "./CertificateSectionNoData";
 export default function CertificateSection() {
   const [currentCertificate, setCurrentCertificate] = useState<number>(0);
   const settings2 = {
@@ -23,6 +24,7 @@ export default function CertificateSection() {
     prevArrow: <PrevArrow classname="fill-blue-100 hover:fill-blue-300" currentSlide={currentCertificate} setCurrentSlide={setCurrentCertificate} maxSlide={mockCertificate.length - 1}/>
   };
   return (
+    mockCertificate.length != 0 ? 
     <section className="flex flex-col items-center pt-[62px] pb-[37px] bg-[#F9FAFB] ">
       <div className="flex flex-row gap-[25px] mb-[45px]">
         <LeftFlower fill="#FDB022" />
@@ -55,8 +57,6 @@ export default function CertificateSection() {
         <div className="absolute -bottom-2 -right-2 "><SmallFrame stroke="#947EFB"/></div>
         {
           mockCertificate.map((data, i)=>{
-            // console.log("i = " + i);
-            // console.log("currentCertificate = " + currentCertificate);
             return <div className={`${i == currentCertificate ? "flex flex-col items-center" : "hidden"} `} key={data.id}>
               <p className="medium36 text-brand-700">{data.name}</p>
               <p className="medium30 mt-[30px] mb-[10px]">By <span className="text-blue-200">{data.issuer}</span> </p>
@@ -67,5 +67,7 @@ export default function CertificateSection() {
       </div>
       <Link href={"/certificate"} className="regular24 underline mt-[55px]">View all certificate</Link>
     </section>
+    :
+    <CertificateSectionNoData/>
   );
 }

@@ -12,7 +12,7 @@ import NextArrow2 from '@/components/SVG/NextArrow2'
 import PrevArrow2 from '@/components/SVG/PrevArrow2'
 import Footer from '@/components/Footer'
 
-export default function Badge() {
+export default function Certificate() {
   const router = useRouter();
 
   const settings = {
@@ -29,12 +29,12 @@ export default function Badge() {
       <Navbar isUser={true}/>
       <div className="flex flex-col mt-[90px] items-center">
         <div className="flex flex-row gap-[25px] mt-[60px] mb-[75px]">
-          <LeftFlower fill="black" />
+          <LeftFlower fill="#FDB022" />
           <div className="flex flex-col items-center">
-            <Star5 fill="black"/>
-            <p className="text-[64px] font-medium bg-gradient-to-r from-[#00B2FF]  to-[#AA00FF] to-80% text-transparent bg-clip-text">Badges</p>
+            <Star5 fill="#FDB022"/>
+            <p className="text-[64px] font-medium bg-gradient-to-r from-[#EB00FF] via-[#651FFF] via-40% to-[#00B2FF] text-transparent bg-clip-text">Certificates</p>
           </div>
-          <RightFlower fill="black" />
+          <RightFlower fill="#FDB022" />
         </div>
         {/* Show all course */}
         <div className="flex flex-col gap-[120px] mb-[120px]">
@@ -48,17 +48,17 @@ export default function Badge() {
               <div className="flex flex-row pb-[40px] gap-[94px]" >
                 {/* Show badge each course */}
                 {
-                  course.map((data,i)=>{
+                  course.map((data, i)=>{
                     return( 
                         <div className='flex flex-col items-center bg-white shadow-thin rounded-[32px] w-[437px] pb-[22px]' key={data.id}>
-                          <div className={`${ (i+1) % 2 == 0 ? "bg-blue-300" : "bg-brand-800" }  rounded-[32px] w-full h-[353px] flex justify-center items-center`} >
-                            <img src="/badge_crop.png" alt="" className="w-[313px] h-[337px]"/>
+                          <div className={`${ (i+1) % 2 == 0 ? "bg-blue-300" : "bg-brand-800" } rounded-[32px] w-full h-[306px] flex justify-center items-center`} >
+                            <img src="/certificate.png" alt="" className="w-[429px] h-[298px] rounded-[28px]"/>
                           </div>
                           <p className="medium30 text-blue-400 mt-[22px] mb-[18px]">{data.name}</p>
                           <p className="medium24">By <span className="text-blue-200">{data.issuer}</span></p>
                           <p className="regular24 mt-[6px] mb-[20px]">{data.date}</p>
                           <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700"
-                            onClick={()=> router.push("/badge/" + data.id)}
+                            onClick={()=> router.push("/certificate/" + data.id)}
                           >
                             More Detail
                           </button>
@@ -70,19 +70,19 @@ export default function Badge() {
               :
               <Slider {...settings}>
                 {
-                  course.map((data,i)=>{
+                  course.map((data, i)=>{
                     return ( 
-                    <div key={data.id} className="group ">
+                    <div key={data.id}>
                       <div className="flex flex-row justify-center pb-[40px]">
                         <div className='flex flex-col items-center bg-white shadow-thin rounded-[32px] w-[437px] pb-[22px]'>
-                          <div className={`${ (i+1) % 2 == 0 ? "bg-blue-300" : "bg-brand-800" }  rounded-[32px] w-full h-[353px] flex justify-center items-center`} >
-                            <img src="/badge_crop.png" alt="" className="w-[313px] h-[337px]"/>
+                          <div className={`${ (i+1) % 2 == 0 ? "bg-blue-300" : "bg-brand-800" } rounded-[32px] w-full h-[306px] flex justify-center items-center`} >
+                            <img src="/certificate.png" alt="" className="w-[429px] h-[298px] rounded-[28px]"/>
                           </div>
                           <p className="medium30 text-blue-400 mt-[22px] mb-[18px]">{data.name}</p>
                           <p className="medium24">By <span className="text-blue-200">{data.issuer}</span></p>
-                          <p className="regular24 mt-[6px] mb-[20px]">25/02/2023</p>
+                          <p className="regular24 mt-[6px] mb-[20px]">{data.date}</p>
                           <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700"
-                            onClick={()=> router.push("/badge/" + data.id)}
+                            onClick={()=> router.push("/certificate/" + data.id)}
                           >
                             More Detail
                           </button>

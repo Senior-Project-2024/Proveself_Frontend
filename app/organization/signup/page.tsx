@@ -18,7 +18,7 @@ export default function RegisterOrganization(){
   const { register, handleSubmit, watch, formState: { errors } } = useForm<registerOrganizationStateType>({
     defaultValues : {
       name : "CourseX",
-      phone: "028888888",
+      phone: "0813457821",
       email : "corporateX@mail.com",
       password : "Meaw1234",
       confirmpassword : "Meaw1234"
@@ -35,7 +35,7 @@ export default function RegisterOrganization(){
       isClosable: true,
     })
     try {
-      const res = await API_signup("user",data.email, "", "", "", data.password, data.phone.split("-").join(""));
+      const res = await API_signup("organize",data.email, "", "", data.name, data.password, "", data.phone);
       console.log(res)
       toast.update(toastIdRef.current,{
         title: 'Register successful.',
@@ -101,6 +101,7 @@ export default function RegisterOrganization(){
                     mask="9999999999"
                     maskChar="" 
                     type="text" 
+                    defaultValue={watch().phone}
                     className={`w-[300px] h-[46px] input ${errors?.phone?.type && "input-fail"}`}
                     placeholder="021234567"
                     autoFocus

@@ -19,7 +19,7 @@ export default function Register(){
     defaultValues : {
       firstname : "Pathinya",
       lastname : "Jongsupangpan",
-      phone: "081345782",
+      phone: "0813457821",
       email : "pathinya@gmail.com",
       password : "Meaw1234",
       confirmpassword : "Meaw1234"
@@ -37,7 +37,7 @@ export default function Register(){
       isClosable: true,
     })
     try {
-      const res = await API_signup("user",data.email, data.firstname, data.lastname, "", data.password, data.phone.split("-").join(""));
+      const res = await API_signup("user", data.email, data.firstname, data.lastname, "", data.password, data.phone.split("-").join(""), "");
       console.log(res)
       toast.update(toastIdRef.current,{
         title: 'Register successful.',

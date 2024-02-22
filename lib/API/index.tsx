@@ -1,6 +1,6 @@
 import axios from "axios";
-
-export function API_signup(role : string, email : string, firstname: string, lastname: string, organizeName : string, password: string,  phone: string){
+type Trole = "organize" | "user"
+export function API_signup(role : Trole, email : string, firstname: string, lastname: string, organizeName : string, password: string,  phone: string, landlineNumber: string){
   return axios.post( process.env.NEXT_PUBLIC_BACKEND_HOST + "/auth/signup", {
     email : email,
     password: password,
@@ -8,6 +8,7 @@ export function API_signup(role : string, email : string, firstname: string, las
     fName: firstname,
     lName: lastname,
     telNo: phone,
+    landlineNumber : landlineNumber,
     role: role
   })
 }
