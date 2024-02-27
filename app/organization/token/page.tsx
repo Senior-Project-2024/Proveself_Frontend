@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbars/Navbar"
 import Button from "@/components/Button"
 import { useEffect, useState } from "react"
 import Copy from "@/components/SVG/Copy"
+import Check from "@/components/SVG/Check"
 
 export default function Token(){
   const [token, setToken] = useState<string>("");
@@ -48,13 +49,18 @@ export default function Token(){
             <img src="/key.svg" alt="" />
           </Button>
           <div className="group">
-            <button className="bg-white px-[14px] py-[10px] border border-gray-100 rounded-lg flex flex-row items-center gap-[12px]
-              group-hover:bg-gray-50" 
+            <button className={`bg-white px-[14px] py-[10px] border border-gray-100 rounded-lg flex flex-row items-center gap-[12px] ${isCopied && "gap-[8px]"}
+              group-hover:bg-gray-50`}
               onClick={()=> {
                 navigator.clipboard.writeText(token)
                 setIsCopied(true);
               }}>
-              <Copy className={`stroke-black group-hover:stroke-brand-600 ${isCopied && "stroke-brand-600"}`}/>
+              {
+                isCopied ? 
+                <Check stroke="#7F56D9"/>
+                :
+                <Copy className={`stroke-black group-hover:stroke-brand-600`}/>
+              }
               <p className={`${isCopied && "hidden"} medium20 group-hover:text-brand-600`}>Copy Token</p>
               <p className={`${isCopied ? "block" : "hidden"}  medium20 text-brand-600`}>Copied Token!</p>
             </button>

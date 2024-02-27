@@ -15,9 +15,11 @@ interface Ibutton {
   children? : React.ReactNode,
   link? : string,
   onclick? : () => void,
+  isTargetBlank ?: boolean,
+  hover ?: string
 }
 
-export default function Button({text , textColor = "text-white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", border = "", borderColor = "" , children, link="", onclick} : Ibutton) {
+export default function Button({text , textColor = "text-white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", border = "", borderColor = "" , children, link="", onclick, isTargetBlank = false, hover} : Ibutton) {
   const classStr = classNames("w-auto h-auto flex flex-row justify-center items-center", 
     bgcolor,
     px,
@@ -25,11 +27,12 @@ export default function Button({text , textColor = "text-white", font = "medium2
     rounded,
     gap,
     border,
-    borderColor
+    borderColor,
+    hover
   );
   
   return (
-    <Link href={link}>
+    <Link href={link} target={isTargetBlank ? "_blank" : ""}>
       <button className={classStr} onClick={onclick}>
         {children}
         <p className={` ${textColor} ${font}`}>{text}</p>

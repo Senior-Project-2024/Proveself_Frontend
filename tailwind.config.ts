@@ -30,7 +30,7 @@ const config: Config = {
           'blue-200' : "#2196F3",
           'blue-300' : "#3F51B5",
           'blue-400' : "#003F8F",
-          'gray-100' : '#878787',
+          'gray-100' : '#D9D9D9',
           'gray-200' : '#4A4A4A',
           'black' : '#292929',
           'white' : '#FFFFFF',

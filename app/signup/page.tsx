@@ -164,7 +164,7 @@ export default function Register(){
                   </div>
                 </div>
               </div>
-              <p className="light16 text-gray-100">Use 8 or more characters, at least one special character and one number</p>
+              <p className="light16 text-gray-100">Must be at least 8 characters, 1 uppercase & 1 number</p>
             </div>
 
             <div className="flex flex-col items-center gap-5  mt-[20px]">
