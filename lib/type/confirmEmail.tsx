@@ -1,0 +1,1 @@
+export type typeConfirm = "default" | "success" | "fail" | "sendFail"

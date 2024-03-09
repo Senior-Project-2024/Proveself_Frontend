@@ -46,7 +46,7 @@ export default function BadgeSection() {
             </div>
           })
         }
-      </Slider>
+        </Slider>
       </div>
       <div className="border-[3px] border-blue-300 shadow-thin-more flex flex-col items-center px-[64px] py-[28px] mt-[75px] relative">
         <img src="/small-frame.svg" alt="" className="absolute -top-2 -left-2 " />

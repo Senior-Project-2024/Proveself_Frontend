@@ -11,10 +11,10 @@ import NextArrow2 from "@/components/SVG/NextArrow2";
 import PrevArrow2 from "@/components/SVG/PrevArrow2";
 import RightFlower from "@/components/SVG/RightFlower";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname , useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Slider from "react-slick";
-import { useRouter } from "next/navigation";
+
 
 export default function Address({params} : Readonly<{ params : { address : string}}>) {
   const router = useRouter()
@@ -175,7 +175,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
             </div>
             {/* Copy link */}
             <div className="group">
-              <button className={`bg-white px-[14px] py-[10px] border border-gray-100 rounded-lg flex flex-row items-center gap-[12px] ${isCopied && "gap-[8px]"}
+              <button className={`bg-white px-[14px] py-[10px] border border-[#D9D9D9] rounded-lg flex flex-row items-center gap-[12px] ${isCopied && "gap-[8px]"}
                 group-hover:bg-gray-50`}
                 onClick={()=> {
                   navigator.clipboard.writeText(path)

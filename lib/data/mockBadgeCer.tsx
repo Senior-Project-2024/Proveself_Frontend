@@ -49,16 +49,26 @@ export const mockBadge = [
     img : "/badge_crop.png",
     criteria : "Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations",
   },
-  {
-    id: "fg4a02ae74db67912311d",
-    name : "Nestjs gen3",
-    issuer : "Future course",
-    date : "25 December 2020",
-    isserTo : "Pathinya Jongsupangpan",
-    descriptionCourse : "AIS DIGITAL TALENT | THE BLOOM is a 12 weeks internship program for 3rd and 4th-year students in the Digital Technology field who want to learn, develop skills, gain experience, and practice their working abilities through real projects alongside AIS's professionals in digital technology and innovation. The student will learn many courses on Technical Skills, People Skills, and Entrepreneurial Skills from AIS Academy, as well as opportunities to present their work on Demo day to AIS Management.",
-    img : "/badge_crop.png",
-    criteria : "Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations",
-  },
+  // {
+  //   id: "fg4a02ae74db67912311d",
+  //   name : "Nestjs gen3",
+  //   issuer : "Future course",
+  //   date : "25 December 2020",
+  //   isserTo : "Pathinya Jongsupangpan",
+  //   descriptionCourse : "AIS DIGITAL TALENT | THE BLOOM is a 12 weeks internship program for 3rd and 4th-year students in the Digital Technology field who want to learn, develop skills, gain experience, and practice their working abilities through real projects alongside AIS's professionals in digital technology and innovation. The student will learn many courses on Technical Skills, People Skills, and Entrepreneurial Skills from AIS Academy, as well as opportunities to present their work on Demo day to AIS Management.",
+  //   img : "/badge_crop.png",
+  //   criteria : "Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations",
+  // },
+  // {
+  //   id: "fg4a02ae74db679112321311d",
+  //   name : "Nestjs gen3",
+  //   issuer : "Future course",
+  //   date : "25 December 2020",
+  //   isserTo : "Pathinya Jongsupangpan",
+  //   descriptionCourse : "AIS DIGITAL TALENT | THE BLOOM is a 12 weeks internship program for 3rd and 4th-year students in the Digital Technology field who want to learn, develop skills, gain experience, and practice their working abilities through real projects alongside AIS's professionals in digital technology and innovation. The student will learn many courses on Technical Skills, People Skills, and Entrepreneurial Skills from AIS Academy, as well as opportunities to present their work on Demo day to AIS Management.",
+  //   img : "/badge_crop.png",
+  //   criteria : "Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations",
+  // },
 ]
 
 export const mockCertificate = [

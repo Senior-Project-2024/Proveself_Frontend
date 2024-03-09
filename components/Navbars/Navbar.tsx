@@ -1,29 +1,24 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Button from '../Button'
 import Link from 'next/link'
-import {easeIn, easeInOut, easeOut, motion} from "framer-motion"
+import { motion } from "framer-motion"
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { IstatusNav, IstatusNavOrganization } from '@/lib/type/navbarType'
 import { dataNavOrganization, dataNavUser } from '@/lib/data/dataNav'
 import { checkRoute} from './checkRoute'
 import ModalSetting from '../ModalSetting'
 import axios from 'axios'
-import ModalConfirmEmail from '../ModalConfirmEmail'
-import { useContext } from 'react'
 import { AuthContext } from '@/context/AuthContext'
 
 export default function Navbar({isUser = true} : {isUser : boolean}) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const {statusAuth, setStatusAuth} = useContext(AuthContext);
+  const { statusAuth } = useContext(AuthContext);
   const [statusNav, setStatusNav] = useState<IstatusNav | IstatusNavOrganization>();
   const [statusNavOrganization, setStatusNavOrganization] = useState<IstatusNav | IstatusNavOrganization>();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [openSetting, setOpenSetting] = useState<boolean>(false);
-  const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
-  type ItypeConfirm = "default" | "success" | "fail";
 
   useEffect(()=>{
     const callAPI = async () => {
@@ -45,9 +40,6 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
     }
     // callAPI();
     checkRoute(pathname, setStatusNav, setStatusNavOrganization);
-    if(searchParams.get("email")){
-      setOpenConfirmEmail(true);
-    }
   },[])
 
 

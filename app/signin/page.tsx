@@ -5,19 +5,25 @@ import DecorateBackground from "../../components/decorateBackground";
 import { loginSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ModalConfirmEmail from "@/components/ModalConfirmEmail";
+import { useToast } from "@chakra-ui/react";
+import { API_signin } from "@/lib/API";
+import { setCookie } from "cookies-next";
+import { typeConfirm } from "@/lib/type/confirmEmail";
 
 export default function Login() {
-  const router = useRouter()
+  const toast = useToast()
+  const router = useRouter();
+  const toastIdRef = useRef<any>(null)
   const searchParams = useSearchParams()
   const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
-  type ItypeConfirm = "default" | "success" | "fail";
+  type ItypeConfirm = typeConfirm;
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
-      email : "example@gmail.com",
+      email : "pathinya@gmail.com",
       password : "Meaw1234"
     },
     resolver : yupResolver(loginSchema)
@@ -27,16 +33,35 @@ export default function Login() {
     (searchParams.get("email") && searchParams.get("typeConfirm")) && setOpenConfirmEmail(true);
   },[])
   
-  const onSubmit: SubmitHandler<loginStateType> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<loginStateType> = async (data) => {
     setErrorMessage("");
-    if(data.email == "example@gmail.com" && data.password == "Meaw1234"){
-      // call api 
+    toastIdRef.current = toast({
+      title: 'Logining...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
+    })
+    try{
+      const res = await API_signin(data.email, data.password);
+      toast.update(toastIdRef.current,{
+        title: 'Login successful.',
+        description: "You've login account successful.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+      setCookie("data-user", res.data);
       router.push(`/`)
-      
-    }else{
-      // if(error.data == "email has not been confirmed")
-      setErrorMessage("Your email has not been confirmed");
+    }catch(err){
+      toast.update(toastIdRef.current,{
+        title: 'Login Fail.' ,
+        description: err.response.data.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+      })
+      setErrorMessage(err.response.data.message);
     }
   };
   return (

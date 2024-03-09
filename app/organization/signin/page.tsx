@@ -5,19 +5,25 @@ import DecorateBackground from "../../../components/decorateBackground";
 import { loginSchema } from "@/lib/ScemaYup";
 import { loginStateType } from "@/lib/type/useForm";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import ModalConfirmEmail from "@/components/ModalConfirmEmail";
-import { API_signin, API_updatePassword } from "@/lib/API";
+import { useToast } from "@chakra-ui/react";
+import { API_signin } from "@/lib/API";
+import { setCookie } from "cookies-next";
+import { typeConfirm } from "@/lib/type/confirmEmail";
+
 export default function LoginOrganization() {
-  const router = useRouter()
+  const toast = useToast()
+  const router = useRouter();
+  const toastIdRef = useRef<any>(null)
   const searchParams = useSearchParams()
   const [openConfirmEmail, setOpenConfirmEmail] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>();
-  type ItypeConfirm = "default" | "success" | "fail";
+  type ItypeConfirm = typeConfirm;
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
-      email : "example@mail.com",
+      email : "corporateX@mail.com",
       password : "Meaw1234"
     },
     resolver : yupResolver(loginSchema)
@@ -28,14 +34,34 @@ export default function LoginOrganization() {
   },[])
 
   const onSubmit: SubmitHandler<loginStateType> = async (data) => {
-    // call api
+    setErrorMessage("");
+    toastIdRef.current = toast({
+      title: 'Logining...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
+    })
     try{
-      const res = await API_signin("organize", data.email, data.password);
-      console.log(res)
-    }catch(error){
-      console.log(error.response)
-      // set
-      setErrorMessage("Your email has not been confirmed");
+      const res = await API_signin(data.email, data.password);
+      toast.update(toastIdRef.current,{
+        title: 'Login successful.',
+        description: "You've login account successful.",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+      setCookie("data-organize", res.data);
+      router.push(`/organization`)
+    }catch(err){
+      toast.update(toastIdRef.current,{
+        title: 'Login Fail.',
+        description: err.response.data.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+      })
+      setErrorMessage(err.response.data.message);
     }
   };
 

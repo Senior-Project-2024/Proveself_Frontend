@@ -1,22 +1,50 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import Modal from "./Modal";
 import { useRouter, usePathname } from "next/navigation";
+import { typeConfirm } from "@/lib/type/confirmEmail";
+import { API_sendEmail } from "@/lib/API";
+import { useToast } from "@chakra-ui/react";
 interface IModalConfirmEmail{
   setConfirmEmail : any
   email: string
-  typeConfirm : "default" | "success" | "fail"
+  typeConfirm : typeConfirm
   
 }
 
 export default function ModalConfirmEmail({setConfirmEmail, email, typeConfirm} : IModalConfirmEmail){
-  const router = useRouter(); 
-  const path = usePathname();
-  const [thisTypeConfirm, setThisTypeConfirm] = useState<"default" | "success" | "fail">(typeConfirm);
-  const resendEmail = () => {
+  const toast = useToast()
+  const router = useRouter();
+  const toastIdRef = useRef<any>(null)
+  const [thisTypeConfirm, setThisTypeConfirm] = useState<typeConfirm>(typeConfirm);
+  const resendEmail = async () => {
     // call send email
-    // if send success
-    setThisTypeConfirm("default");
-    // if not success show or log something
+    toastIdRef.current = toast({
+      title: 'Sending confirm email...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
+    })
+    try{ 
+      await API_sendEmail(email);
+      setThisTypeConfirm("default");
+      toast.update(toastIdRef.current,{
+        title: 'Sending email succesful.',
+        description: "We've sent verify email to your email",
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+    }catch(err){
+      toast.update(toastIdRef.current,{
+        title: 'Sending email fail.' ,
+        description: err.response.data.message,
+        status: 'error',
+        duration: 10000,
+        isClosable: true,
+      })
+      setThisTypeConfirm("sendFail");
+    }
   }
 
   if(thisTypeConfirm == "default"){
@@ -53,6 +81,21 @@ export default function ModalConfirmEmail({setConfirmEmail, email, typeConfirm} 
         <div className="flex flex-col items-center pt-[75px]">
           <p className="text-[48px] text-red leading-[120%] font-medium">Confirm Failed</p>
           <p className="w-[750px] regular30 text-center mt-[43px] mb-[40px]">Your email confirmation has already been expired. Please resend email to confirm again.</p>
+          <img src="/Fail_ConfirmEmail.png" alt="" />
+          <button className="w-fit bg-brand-600 flex px-[24px] py-[15px] gap-2 items-center rounded-[8px] mt-[40px]" onClick={()=> resendEmail()}>
+            <p className="text-white medium20 ">Resend Email</p>
+            <img src="/Arrow.svg" alt="" className="" />
+          </button>
+        </div>
+      </Modal>
+    )
+  }
+  else if(thisTypeConfirm == "sendFail"){
+    return(
+      <Modal width="w-[916px]" height="h-[594px]" setStatus={setConfirmEmail} typeClose="outside">
+        <div className="flex flex-col items-center pt-[75px]">
+          <p className="text-[48px] text-red leading-[120%] font-medium">Send Failed</p>
+          <p className="w-[750px] regular30 text-center mt-[43px] mb-[40px]">Since, There is some problem for sending email. Please resend email to send email again.</p>
           <img src="/Fail_ConfirmEmail.png" alt="" />
           <button className="w-fit bg-brand-600 flex px-[24px] py-[15px] gap-2 items-center rounded-[8px] mt-[40px]" onClick={()=> resendEmail()}>
             <p className="text-white medium20 ">Resend Email</p>

@@ -1,7 +1,9 @@
 import axios from "axios";
-type Trole = "organize" | "user"
+import http from "@/helper/configAxios";
+import { Trole } from "../type/constant";
+
 export function API_signup(role : Trole, email : string, firstname: string, lastname: string, organizeName : string, password: string,  phone: string, landlineNumber: string){
-  return axios.post( process.env.NEXT_PUBLIC_BACKEND_HOST + "/auth/signup", {
+  return http.post("/auth/signup", {
     email : email,
     password: password,
     organizeName: organizeName,
@@ -10,6 +12,20 @@ export function API_signup(role : Trole, email : string, firstname: string, last
     telNo: phone,
     landlineNumber : landlineNumber,
     role: role
+  })
+}
+
+
+export function API_sendEmail(email : string){
+  return http.post("/auth/sendEmail" ,{
+    email : email
+  })
+}
+
+export function API_signin(email : string, password:string){
+  return http.post("/auth/signin", {
+    email : email,
+    password : password,
   })
 }
 
@@ -37,18 +53,7 @@ export function API_updatePassword(role : string, currentpassword : string, newP
   })
 }
 
-export async function API_signin(role : string, email : string, password : string){
-  return axios.get("https://65c45875dae2304e92e2777f.mockapi.io/use",{
-    // currentPassword : currentPassword
-    // newPassword : newPassword
-    // confirmNewPassword : confirmNewPassword
-    // role: role
-  });
-}
 
 export async function API_auth(){
-  return [
-    {role : "user"},
-    {role : "organize"}
-  ]
+  return  http.get("/auth/whoAmI");
 }

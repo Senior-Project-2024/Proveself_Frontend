@@ -13,8 +13,14 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
     isUserAuth : undefined,
     isOrganizeAuth : undefined,
   })
+
+  const res = [
+    { role : "user" },
+    { role : "organize"}
+  ]
+  
   const callAPI = async () => {
-    const res = await API_auth();
+    // const res = await API_auth();
     let userAuth = false;
     let organizeAuth = false;
     res?.forEach((e)=>{

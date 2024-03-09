@@ -9,12 +9,15 @@ import InputMask from "react-input-mask"
 import { useToast } from "@chakra-ui/react";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
-import { API_signup } from "@/lib/API";
+import { API_sendEmail, API_signup } from "@/lib/API";
+import { useSignup } from "@/lib/API/useSignup";
 
 export default function RegisterOrganization(){
   const toast = useToast()
   const router = useRouter();
   const toastIdRef = useRef<any>(null)
+  const toastIdRefEmail = useRef<any>(null)
+  const Signup = useSignup();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<registerOrganizationStateType>({
     defaultValues : {
       name : "CourseX",
@@ -27,47 +30,77 @@ export default function RegisterOrganization(){
   });
 
   const onSubmit: SubmitHandler<registerOrganizationStateType> = async (data) => {
-    toastIdRef.current = toast({
-      title: 'Registering...',
-      description: "Loading",
-      status: 'loading',
-      duration: 9000,
-      isClosable: true,
-    })
-    try {
-      const res = await API_signup("organize",data.email, "", "", data.name, data.password, "", data.phone);
-      console.log(res)
-      toast.update(toastIdRef.current,{
-        title: 'Register successful.',
-        description: "We've create your account successful.",
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
-      router.push(`/signin?email=${data.email}&typeConfirm=default`)
-    }catch(err){
-      console.log(err.response)
-      // Show error
-      if(typeof err.response.data.message != "string"){
-        err.response.data.message.forEach( (element : string) => {
-          toast.update(toastIdRef.current,{
-            title: 'Register Fail.' ,
-            description: element,
-            status: 'error',
-            duration: 10000,
-            isClosable: true,
-          })
-        });
-      }else{
-        toast.update(toastIdRef.current,{
-          title: 'Register Fail.' ,
-          description: err.response.data.message,
-          status: 'error',
-          duration: 10000,
-          isClosable: true,
-        })
-      }
-    }
+     (await Signup)(data, "organize");
+    // toastIdRef.current = toast({
+    //   title: 'Registering...',
+    //   description: "Loading",
+    //   status: 'loading',
+    //   duration: 9000,
+    //   isClosable: true,
+    // })
+    // // call sign up API
+    // try {
+    //   const res = await API_signup("organize",data.email, "", "", data.name, data.password, "", data.phone);
+    //   console.log(res)
+    //   toast.update(toastIdRef.current,{
+    //     title: 'Register successful.',
+    //     description: "We've create your account successful.",
+    //     status: 'success',
+    //     duration: 9000,
+    //     isClosable: true,
+    //   })
+    //   // call send email API
+    //   try{
+    //     toastIdRefEmail.current = toast({
+    //       title: 'Sending confirm email...',
+    //       description: "Loading",
+    //       status: 'loading',
+    //       duration: 9000,
+    //       isClosable: true,
+    //     })
+    //     const resEmail = await API_sendEmail(data.email);
+    //     toast.update(toastIdRefEmail.current,{
+    //       title: 'Sending email succesful.',
+    //       description: "We've sent verify email to your email",
+    //       status: 'success',
+    //       duration: 9000,
+    //       isClosable: true,
+    //     })
+    //     router.push(`/signin?email=${data.email}&typeConfirm=default`)
+    //   }catch(err){
+    //     toast.update(toastIdRefEmail.current,{
+    //       title: 'Sending email fail.' ,
+    //       description: err.response.data.message,
+    //       status: 'error',
+    //       duration: 10000,
+    //       isClosable: true,
+    //     })
+    //     router.push(`/signin?email=${data.email}&typeConfirm=sendFail`)
+    //   }
+
+    // }catch(err){
+    //   console.log(err.response)
+    //   // Show error
+    //   if(typeof err.response.data.message != "string"){
+    //     err.response.data.message.forEach( (element : string) => {
+    //       toast.update(toastIdRef.current,{
+    //         title: 'Register Fail.' ,
+    //         description: element,
+    //         status: 'error',
+    //         duration: 10000,
+    //         isClosable: true,
+    //       })
+    //     });
+    //   }else{
+    //     toast.update(toastIdRef.current,{
+    //       title: 'Register Fail.' ,
+    //       description: err.response.data.message,
+    //       status: 'error',
+    //       duration: 10000,
+    //       isClosable: true,
+    //     })
+    //   }
+    // }
   };
   return(
     <section className="relative overflow-hidden">
@@ -152,7 +185,7 @@ export default function RegisterOrganization(){
                   </div>
                 </div>
               </div>
-              <p className="light16 text-gray-100">Must be at least 8 characters, 1 uppercase & 1 number</p>
+              <p className="light16 text-gray-100">Must be at least 8 characters, 1 uppercase and 1 number</p>
             </div>
 
             <div className="flex flex-col items-center gap-5  mt-[20px]">
