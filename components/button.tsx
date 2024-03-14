@@ -20,7 +20,7 @@ interface Ibutton {
 }
 
 export default function Button({text , textColor = "text-white", font = "medium20" , bgcolor="bg-brand-700", gap = "gap-[12px]", px="px-[30px]", py="py-[14px]", rounded="rounded-[8px]", border = "", borderColor = "" , children, link="", onclick, isTargetBlank = false, hover} : Ibutton) {
-  const classStr = classNames("w-auto h-auto flex flex-row justify-center items-center", 
+  const classStr = classNames("w-auto h-auto flex flex-row justify-center items-center transition-all duration-500 opacity-100", 
     bgcolor,
     px,
     py,

@@ -8,6 +8,25 @@
     color: #292929;
 }
 
+::-webkit-scrollbar{
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background-color: #a5a5a5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 9999px;
+  background-color: #868686;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -114,6 +133,24 @@
     .slick-slide.slick-center .image{
       transform: scale(1.2);
       transition: all 400ms ease-out;
+    }
+    .custom-scroll::-webkit-scrollbar{
+      width: 10px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-track {
+      border-radius: 9999px;
+      background-color: #F5F5F5;
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb {
+      border-radius: 9999px;
+      background-color: #a5a5a5;
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      border-radius: 9999px;
+      background-color: #868686;
     }
 
 }

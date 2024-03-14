@@ -15,11 +15,11 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
   })
 
   const res = [
-    { role : "user" },
+    // { role : "user" },
     { role : "organize"}
   ]
   
-  const callAPI = async () => {
+  const callAuthAPI = async () => {
     // const res = await API_auth();
     let userAuth = false;
     let organizeAuth = false;
@@ -38,7 +38,7 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
   const isPathNotAuth = (path == "/signin") || (path == "/signup") || (path == "organization/signin") || (path == "organization/signup")
   useEffect(()=>{
     if(!isPathNotAuth){
-      callAPI();
+      callAuthAPI();
     }
   },[])
   return (
