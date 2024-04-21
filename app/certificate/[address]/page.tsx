@@ -1,5 +1,4 @@
 'use client'
-import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbars/Navbar";
 import Check from "@/components/SVG/Check";

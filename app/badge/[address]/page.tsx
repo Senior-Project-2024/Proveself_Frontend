@@ -1,5 +1,4 @@
 'use client'
-import Button from "@/components/Button";
 import Footer from "@/components/Footer";
 import HintVerification from "@/components/Hint/HintVerification";
 import Navbar from "@/components/Navbars/Navbar";
@@ -62,9 +61,12 @@ export default function Address({params} : Readonly<{ params : { address : strin
                 AIS DIGITAL TALENT | THE BLOOM is a 12 weeks internship program for 3rd and 4th-year students in the Digital Technology field who want to learn, develop skills, gain experience, and practice their working abilities through real projects alongside AIS's professionals in digital technology and innovation. The student will learn many courses on Technical Skills, People Skills, and Entrepreneurial Skills from AIS Academy, as well as opportunities to present their work on Demo day to AIS Management.
               </p>
               {/* Link to course */}
-              <Button isTargetBlank={true} text="Course Detail" textColor="text-black" px="px-[11px]" py="py-[7px]" gap="gap-[5px]" bgcolor="bg-white" border="border-[1.5px]" borderColor="border-black" font="regular20" rounded="rounded-[14px]" link="https://www.skooldio.com/">
-                <ExternalLink stroke="#292929"/>
-              </Button>
+              <Link href={"https://www.skooldio.com/"} target="_blank">
+                <button className="flex flex-row items-center gap-[5px] px-[11px] py-[7px] border-[1.5px] border-black rounded-[14px]">
+                  <ExternalLink stroke="#292929"/>
+                  <p className="regular20">Course Detail</p>
+                </button>
+              </Link>
             </div>
           </div>
         </div>

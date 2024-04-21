@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect, useState, useContext } from 'react'
-import Button from '../Button'
 import Link from 'next/link'
 import { motion } from "framer-motion"
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -160,8 +159,16 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
             :
             // is not auth
             <>
-              <Button link={`${ isUser ? "/signup" : "/organization/signup"} `} text="Sign Up" textColor="text-white" font="regular18" py="py-[10px]" px="px-[20px]" rounded="rounded-[10px]" bgcolor='bg-brand-600' />
-              <Button link={`${ isUser ? "/signin" : "/organization/signin"} `} text="Sign In" textColor="text-brand-600" font="regular18" py="py-[10px]" px="px-[20px]" rounded="rounded-[10px]" bgcolor='bg-white' border='border' borderColor='border-brand-600'/>
+              <Link href={isUser ? "/signup" : "/organization/signup"}>
+                <button className="px-[20px] py-[10px] rounded-[10px] bg-brand-600 hover:bg-brand-700 transition-all duration-300 ease-in-out">
+                  <p className="regular18 text-white">Sign Up</p>
+                </button>
+              </Link>
+              <Link href={isUser ? "/signin" : "/organization/signin"}>
+                <button className="px-[20px] py-[10px] rounded-[10px] bg-white hover:bg-neutral-200 border border-brand-600 transition-all duration-300 ease-in-out">
+                  <p className="regular18 text-brand-600">Sign In</p>
+                </button>
+              </Link>
             </>
           }
         </div>

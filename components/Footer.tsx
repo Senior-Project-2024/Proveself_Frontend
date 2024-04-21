@@ -1,5 +1,4 @@
 import Link from "next/link"
-import Button from "./Button"
 
 export default function Footer() {
   return (
@@ -11,9 +10,12 @@ export default function Footer() {
             <p className="text-[40px] text-white font-Signika font-semibold">ProveSelf</p>
           </div>
           <p className="regular20 w-[340px]">We are senior computer engineering student at KMUTT (CPE34) and ProveSelf is our senior project </p>
-          <Button text={"About Us"} px="px-[13px]" py="py-[4px]" gap="gap-[5px]" bgcolor="bg-blue-300" border="border-[2px]" borderColor="border-white" font="regular20" rounded="rounded-[14px]" link="/about">
-            <img src="/external-link.svg" alt="" className="w-[21px] h-[21px]" />
-          </Button>
+          <Link href={"/about"}>
+            <button className="flex flex-row items-center px-[13px] py-[4px] gap-[5px] bg-blue-300 border-[2px] border-white rounded-[14px]">
+              <img src="/external-link.svg" alt="" className="w-[21px] h-[21px]" />
+              <p className="regular20">About Us</p>
+            </button>
+          </Link>
         </div>
         <div className="flex flex-col items-center gap-[31px]">
           <p className="medium30">Feature</p>

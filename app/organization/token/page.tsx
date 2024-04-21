@@ -1,6 +1,5 @@
 'use client'
 import Navbar from "@/components/Navbars/Navbar"
-import Button from "@/components/Button"
 import { useEffect, useState } from "react"
 import Copy from "@/components/SVG/Copy"
 import Check from "@/components/SVG/Check"
@@ -53,11 +52,15 @@ export default function Token(){
               <div className="animate-pulse-1 w-[600px] h-[50px] bg-slate-200 rounded-full mt-[34px] mb-[43px]"></div>
             }
         <div className="flex flex-row gap-[22px]">
-          <Button text="Generate Token" bgcolor="bg-brand-600 hover:bg-brand-700" px="px-[14px]" py="py-[10px]"
-            onclick={()=>handleGenerateToken()}
+          <button
+            className="flex flex-row items-center gap-[12px] px-[14px] py-[10px] bg-brand-600 hover:bg-brand-700 rounded-[8px]
+              transition-all duration-500 ease-in-out
+            "
+            onClick={()=> handleGenerateToken()}
           >
             <img src="/key.svg" alt="" />
-          </Button>
+            <p className="medium20 text-white">Generate Token</p>
+          </button>
           <div className="group">
             <button className={`bg-white px-[14px] py-[10px] border border-gray-100 rounded-lg flex flex-row items-center gap-[12px] ${isCopied && "gap-[8px]"}
               group-hover:bg-gray-50`}
