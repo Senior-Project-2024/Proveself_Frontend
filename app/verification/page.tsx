@@ -13,13 +13,13 @@ export default function Verification() {
   const res = {
     id: "fg4a02ae74db679112321311d",
     badgeName : "Nestjs gen3",
-    // certificateName : "Nestjs gen3",
+    certificateName : "", // case : Found Badge
     issueBy : "Future course",
     date : "25 December 2020",
     isserTo : "Pathinya Jongsupangpan",
     descriptionCourse : "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33",
-    // img : "/badge_crop.png",
-    img : "/certificate.png",
+    img : "/badge_crop.png",
+    // img : "/certificate.png",
     criteria : "Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations",
     expire : "12 December 2024",
     skills : [ "C", "Javascript", "Typescript", "MongoABCD" , "Xyzwe", "Genenative", "AIcontest" , "Blockchain", "3D-model", "Smartcontact", "GuildlineX", "Earning"]
