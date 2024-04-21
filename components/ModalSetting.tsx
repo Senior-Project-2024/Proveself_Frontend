@@ -9,7 +9,7 @@ import { useEffect, useState, useRef } from "react";
 import { setCookie, getCookie } from "cookies-next";
 import { TgeneralData, TgeneralDataOrganize } from "@/lib/type/generalData";
 import { useToast } from "@chakra-ui/react";
-import { API_updateProfile, API_updatePassword, API_updateProfileOrganize } from "@/lib/API";
+import { API_updateProfile } from "@/lib/API";
 interface IModalSetting{
   setOpenSetting : any
   isUser: boolean
