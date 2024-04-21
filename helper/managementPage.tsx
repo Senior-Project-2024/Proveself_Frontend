@@ -10,6 +10,4 @@ export const addSkill = (skillState : any, setSkillState: any, skillAdded : stri
   if(!isDuplicate){
     setSkillState([...skillState, skillAdded])
   }
-  // reset input skill
-  setInputSkill("");
 }
