@@ -10,6 +10,8 @@ import { checkRoute} from './checkRoute'
 import ModalSetting from '../ModalSetting'
 import axios from 'axios'
 import { AuthContext } from '@/context/AuthContext'
+import { getCookie, deleteCookie } from 'cookies-next'
+import { API_signout } from '@/lib/API'
 
 export default function Navbar({isUser = true} : {isUser : boolean}) {
   const pathname = usePathname();
@@ -19,26 +21,16 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
   const [statusNavOrganization, setStatusNavOrganization] = useState<IstatusNav | IstatusNavOrganization>();
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [openSetting, setOpenSetting] = useState<boolean>(false);
-
+  const [dataUser, setDataUser] = useState<any>("")
+  const [dataOrganize, setDataOrganize] = useState<any>("")
+  
   useEffect(()=>{
-    const callAPI = async () => {
-      // API need edit
-      axios.post(process.env.NEXT_PUBLIC_MOCK_HOST+"/auth",{
-        // email : personal.email
-      })
-      .then((res)=>{
-        
-      })
-      .catch((error)=>{
-        // authentication fail
-        if(error.response){
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        }
-      })
+    if(statusAuth?.isUserAuth || statusAuth?.isOrganizeAuth){
+      const dataUser = JSON.parse(getCookie("data-user") as string) ?? "";
+      const dataOrganize = JSON.parse(getCookie("data-organize") as string) ?? "";
+      setDataUser(dataUser)
+      setDataOrganize(dataOrganize)
     }
-    // callAPI();
     checkRoute(pathname, setStatusNav, setStatusNavOrganization);
   },[])
 
@@ -59,7 +51,7 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
       <Link href={ isUser ? "/" : "/organization"}>
         <img src="/logo.png" alt="" className="w-[235px] h-[56px] cursor-pointer"/>
       </Link>
-      <div className={`flex flex-row regular20 gap-[40px] ${ (isUser && !statusAuth?.isUserAuth)  && "ml-[80px]"} `}>
+      <div className={`flex flex-row regular20 gap-[40px] ${(isUser && !statusAuth?.isUserAuth)  && "ml-[80px]"} `}>
         {/* Menu button */}
         {
           isUser ?
@@ -89,10 +81,12 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
       <div className="flex flex-row gap-[38px] items-center">
         {
           (isUser && !statusAuth?.isUserAuth) &&
-          <button onClick={()=>router.push("/organization")} className="flex flex-row h-full justify-center items-center border border-black pl-[12px] pr-[15px] py-[4px] rounded-[10px]  gap-[6px]">
-          <img src="/arrow-slant.svg" alt="arrow-slant" className="" />
-          <p className="regular18">Organization</p>
-        </button>
+          <Link href={"/organization"}> 
+            <button className="flex flex-row h-full justify-center items-center border border-black pl-[12px] pr-[15px] py-[4px] rounded-[10px]  gap-[6px]">
+              <img src="/arrow-slant.svg" alt="arrow-slant" className="" />
+              <p className="regular18">Organization</p>
+            </button>
+          </Link>
         }
         {/* Right Navbar */}
         <div className="flex flex-row gap-[10px]">
@@ -102,11 +96,11 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
             <div className="flex flex-row items-center gap-[10px] relative">
               <div className="flex flex-row gap-[12px]"> {/* profile + fullname */}
                 <div className="flex justify-center items-center w-[45px] h-[45px] rounded-[40px] outline outline-[3px] outline-[#F4EBFF] bg-black">
-                  <p className="font-Pridi regular24 text-[#F4EBFF]">PJ</p>
+                  <p className="font-Pridi regular24 text-[#F4EBFF]">{ isUser ? dataUser.fName?.charAt(0) + dataUser.lName?.charAt(0)  : dataOrganize.organizeName?.charAt(0) + dataOrganize.organizeName?.charAt(1)}</p>
                 </div>
                 <div className="flex flex-col max-w-[200px]">
-                  <p className="truncate medium16">Pathinya Jongsupangpan</p>
-                  <p className="truncate regular14">pathinya19@gmail.com</p>
+                  <p className="truncate medium16">{isUser ? dataUser.fName + " " + dataUser.lName :  dataOrganize.organizeName}</p>
+                  <p className="truncate regular14">{isUser ? dataUser.email :  dataOrganize.email}</p>
                 </div>
               </div>
               <motion.button className="w-[32px] h-[32px] rounded-[28px] hover:bg-[#EDEDED] flex flex-row justify-center items-center"
@@ -135,7 +129,27 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
                   </button>
                   <div className='w-full h-[0.5px] bg-[#878787] bg-opacity-40'></div>
                   <button className='flex-1 flex flex-row items-center gap-[10px] pl-[20px] hover:bg-[#EFEFEF] rounded-b-[8px]'
-                    onClick={()=> console.log("wait to make logout")}
+                    onClick={async ()=> {
+                      if(isUser){
+                        try{
+                          await API_signout("user") 
+                          deleteCookie("data-user")
+                          router.push("/")
+                          location.reload()
+                        }catch(err){
+                          console.log(err.response.data.message)
+                        }
+                      }else{
+                        try{
+                          await API_signout("organize") 
+                          deleteCookie("data-organize")
+                          router.push("/organization")
+                          location.reload()
+                        }catch(err){
+                          console.log(err.response.data.message)
+                        }
+                      }
+                    }}
                   >
                   <img src="/logout.svg" alt="logout" className="" />
                     <p className="regular18 ">Sign out</p>

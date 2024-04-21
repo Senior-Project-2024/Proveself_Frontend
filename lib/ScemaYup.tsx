@@ -73,3 +73,38 @@ export const editPasswordSchema = yup.object({
   confirmnewpassword : yup.string().required("Confirm New password is required").
   oneOf([yup.ref('newpassword')], 'Passwords must match') 
 })
+
+export const badgeTemplateSchema = yup.object({
+  badgeName : yup.string().required("Badge name is required"),
+  yearExpired : yup.number().required("Expire yaer is required")
+  .integer("Expire yaer must be integer")
+  .min(0, "Expire yaer at least 0"),
+  monthExpired : yup.number().required("Expire month is required")
+  .integer("Expire month must be integer")
+  .min(0, "Expire month at least 0")
+  .max(11, "Expire month max is 11"),
+  dayExpired : yup.number().required("Expire day is required")
+  .integer("Expire day must be integer")
+  .min(0, "Expire day at least 0"),
+  description : yup.string().required("description is required"),
+  linkCourse : yup.string(),
+  criteria : yup.string().required("criteria is required"),
+  // skills : yup.array().of(yup.string().required("skill is required")).required("skills is required"),
+})
+
+export const certificateTemplateSchema = yup.object({
+  certificateName : yup.string().required("Badge name is required"),
+  yearExpired : yup.number().required("Expire yaer is required")
+  .integer("Expire yaer must be integer")
+  .min(0, "Expire yaer at least 0"),
+  monthExpired : yup.number().required("Expire month is required")
+  .integer("Expire month must be integer")
+  .min(0, "Expire month at least 0")
+  .max(11, "Expire month max is 11"),
+  dayExpired : yup.number().required("Expire day is required")
+  .integer("Expire day must be integer")
+  .min(0, "Expire day at least 0"),
+  description : yup.string().required("description is required"),
+  criteria : yup.string().required("criteria is required"),
+  // skills : yup.array().of(yup.string().required("skill is required")).required("skills is required"),
+})

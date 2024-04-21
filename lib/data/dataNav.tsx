@@ -10,6 +10,10 @@ export const dataNavUser = [
   { 
     name : "Verification", 
     route : "/verification",
+  },
+  {
+    name : "Issue Certificate", 
+    route : "/issue-certificate",
   }
 ]
 

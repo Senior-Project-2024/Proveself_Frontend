@@ -125,6 +125,12 @@
     .input-fail{
       @apply outline outline-red outline-2 focus:outline-red
     }
+    .input-bade-cer{
+      @apply outline-1 outline-[#DCDCE4] focus:outline-2 focus:outline-brand-700
+    }
+    .input-bade-cer-fail{
+      @apply outline-1 outline-red focus:outline-2 focus:outline-red
+    }
     .blurpurple{
       background: linear-gradient(180deg, rgba(31, 100, 255, 0.67) 11.65%, rgba(97, 57, 143, 0.70) 111.65%);
       opacity: 0.78;

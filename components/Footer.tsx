@@ -3,9 +3,9 @@ import Button from "./Button"
 
 export default function Footer() {
   return (
-    <section className="bg-blue-300 mt-[82px] rounded-t-[80px] w-full flex flex-col items-center gap-[56px] text-white pt-[62px] pb-[43px]">
-      <div className="flex flex-row gap-[330px]">
-        <div className="flex flex-col gap-[26px]">
+    <section className="bg-blue-300 mt-[82px] rounded-t-[80px] w-full flex flex-col items-center gap-[28px] text-white pt-[33px] pb-[30px]">
+      <div className="flex flex-row gap-[350px]">
+        <div className="flex flex-col gap-[18px]">
           <div className="flex flex-row items-center gap-[6px]">
             <img src="/logo_no_text.png" alt="" className="w-[60px] h-[56px]" />
             <p className="text-[40px] text-white font-Signika font-semibold">ProveSelf</p>
@@ -30,7 +30,7 @@ export default function Footer() {
           <p className="medium20">sorathorn.16@gmail.com</p>
         </div>
       </div>
-      <div className="bg-[#D9D9D9] w-[1600px] h-[2px]"></div>
+      <div className="bg-[#D9D9D9] w-[1600px] h-[2px] mt-[28px]"></div>
       <p>✍️ Made by Pathinya Jongsupangpan and Sorathorn Kaewchotchuangkul </p>
     </section>
   )

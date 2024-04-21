@@ -35,3 +35,26 @@ export type editPasswordType = {
   newpassword : string;
   confirmnewpassword : string;
 }
+
+export type badgeTemplateType = {
+  badgeName : string;
+  yearExpired : number;
+  monthExpired : number;
+  dayExpired : number;
+  // file : any; note : file will be check after Yup validation
+  description : string;
+  linkCourse ?: string;
+  criteria : string;
+  // skills : string[]; note : can't push in form
+}
+
+export type certificateTemplateType = {
+  certificateName : string;
+  yearExpired : number;
+  monthExpired : number;
+  dayExpired : number;
+  // file : any; note : file will be check after Yup validation
+  description : string;
+  criteria : string;
+  // skills : string[]; note : can't push in form
+}

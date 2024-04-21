@@ -24,6 +24,7 @@ export default function CertificateSection() {
     prevArrow: <PrevArrow classname="fill-blue-100 hover:fill-blue-300" currentSlide={currentCertificate} setCurrentSlide={setCurrentCertificate} maxSlide={mockCertificate.length - 1}/>
   };
   return (
+    // If have atleast 1 certificate
     mockCertificate.length != 0 ? 
     <section className="flex flex-col items-center pt-[62px] pb-[37px] bg-[#F9FAFB] ">
       <div className="flex flex-row gap-[25px] mb-[45px]">
@@ -34,22 +35,35 @@ export default function CertificateSection() {
         </div>
         <RightFlower fill="#FDB022" />
       </div>
-      <div className={`${mockCertificate.length <= 3 ? "w-[600px]" : "w-[1400px]"}`}>
-        <Slider {...settings2} className="pb-[20px]">
-        {
-          mockCertificate?.map((data)=>{
-            return <div className="pt-[40px]" key={data.id}>
-              <div className="h-full flex flex-row justify-center">
-                <Link href={"/certificate/"+data.id} className="image">
-                  {/* <p>{data.name}</p> */}
-                  <img src={data.img} alt="" className="w-[445px] h-[301px] " />
-                </Link>
+      {
+        // If 1 certificate
+        mockCertificate.length === 1 ? 
+        <div className="pt-[20px]">
+          <div className="flex flex-row justify-center">
+            <Link href={"/badge/"+mockCertificate[0].id} className=" image">
+              <img src={mockCertificate[0].img} alt="" className="h-[350px]" />
+            </Link>
+          </div>
+        </div>
+        :
+        // If more 2 certificates
+        <div className={`${mockCertificate.length <= 3 ? "w-[600px]" : "w-[1400px]"}`}>
+          <Slider {...settings2} className="pb-[20px]">
+          {
+            mockCertificate?.map((data)=>{
+              return <div className="pt-[40px]" key={data.id}>
+                <div className="h-full flex flex-row justify-center">
+                  <Link href={"/certificate/"+data.id} className="image">
+                    {/* <p>{data.name}</p> */}
+                    <img src={data.img} alt="" className="w-[445px] h-[301px] " />
+                  </Link>
+                </div>
               </div>
-            </div>
-          })
-        }
-      </Slider>
-      </div>
+            })
+          }
+          </Slider>
+        </div>
+      }
       <div className="border-[3px] border-[#947EFB] shadow-thin-more flex flex-col items-center px-[64px] py-[28px] mt-[75px] relative ">
         <div className="absolute -top-2 -left-2 "><SmallFrame stroke="#947EFB"/></div>
         <div className="absolute -top-2 -right-2 "><SmallFrame stroke="#947EFB"/></div>
@@ -68,6 +82,7 @@ export default function CertificateSection() {
       <Link href={"/certificate"} className="regular24 underline mt-[55px]">View all certificate</Link>
     </section>
     :
+    // If no badge
     <CertificateSectionNoData/>
   );
 }

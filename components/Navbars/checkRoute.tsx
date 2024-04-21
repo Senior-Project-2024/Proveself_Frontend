@@ -6,6 +6,8 @@ export function checkRoute( pathname : string, setStatusNav : any , setStatusNav
     setStatusNav("About Us")
   }else if(pathname == "/verification"){
     setStatusNav("Verification")
+  }else if(pathname == "/issue-certificate"){
+    setStatusNav("Issue Certificate")
   }else if(pathname == "/organization"){
     setStatusNavOrganization("Home")
   }else if(pathname == "/organization/about"){

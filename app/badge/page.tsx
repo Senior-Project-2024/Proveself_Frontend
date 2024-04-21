@@ -57,16 +57,16 @@ export default function Badge() {
                           <p className="medium30 text-blue-400 mt-[22px] mb-[18px]">{data.name}</p>
                           <p className="medium24">By <span className="text-blue-200">{data.issuer}</span></p>
                           <p className="regular24 mt-[6px] mb-[20px]">{data.date}</p>
-                          <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700"
-                            onClick={()=> router.push("/badge/" + data.id)}
-                          >
-                            More Detail
-                          </button>
+                          <Link href={`/badge/${data.id}`}>
+                            <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700">
+                              More Detail
+                            </button>
+                          </Link>
                         </div>
                     )
                   })
                 }
-                </div>
+              </div>
               :
               <Slider {...settings}>
                 {
@@ -81,11 +81,11 @@ export default function Badge() {
                           <p className="medium30 text-blue-400 mt-[22px] mb-[18px]">{data.name}</p>
                           <p className="medium24">By <span className="text-blue-200">{data.issuer}</span></p>
                           <p className="regular24 mt-[6px] mb-[20px]">25/02/2023</p>
-                          <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700"
-                            onClick={()=> router.push("/badge/" + data.id)}
-                          >
-                            More Detail
-                          </button>
+                          <Link href={`/badge/${data.id}`}>
+                            <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700">
+                              More Detail
+                            </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

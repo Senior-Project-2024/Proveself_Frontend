@@ -1,31 +1,45 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { API_auth_fetch } from './lib/API';
  
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
+  console.log("Middleware work")
   const path = request.nextUrl.pathname;
-  // const personal = JSON.parse(request.cookies.get("personal")?.value as string);
-  // const result = await fetch(`https://3cc8384b-b389-4338-883a-81e9d555d5e0.mock.pstmn.io/auth`, {
-  //   method : "POST",
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body : JSON.stringify({
-  //     email : personal.email
-  //   })
-  // });
+  // set default auth
   let isAuthUser: boolean = false;
   let isAuthOrganization: boolean = false;
-  const mockResponse : {role : string}[] = [
-    // {role : "user"},
-    {role : "organize"}
-  ]
+  //
+  const session = request.cookies.get("session")?.value ?? "";
+  const sessionSigValue = request.cookies.get("session.sig")?.value ?? "";
+  try{
+    const result = await API_auth_fetch(session, sessionSigValue);
+    const data = await result.json();
+    if(data?.user){
+      isAuthUser = true;
+    }
+    if(data?.organize){
+      isAuthOrganization = true;
+    }
+  }catch(err){
+    console.log(err.message)
+  }
+
+
+  // const mockResponse : {role : string}[] = [
+  //   {role : "user"},
+  //   {role : "organize"}
+  // ]
 
   // set isAuthUser and usAuthOrganization
-  mockResponse.forEach((e)=>{
-    if(e.role == "user")
-      isAuthUser = true;
-    if(e.role == "organize")
-      isAuthOrganization = true;
-  })
+  
+
+  // mockResponse.forEach((e)=>{
+  //   if(e.role == "user")
+  //     isAuthUser = true;
+  //   if(e.role == "organize")
+  //     isAuthOrganization = true;
+  // })
 
   if(path == "/signin" && isAuthUser)
     return NextResponse.redirect(new URL('/', request.url))

@@ -14,7 +14,7 @@ export function Section2() {
           </div>
           <div className="flex flex-col items-center ml-[98px] mr-[13px] w-[452px] pt-[30px]">
             <p className="light24 text-center w-[400px]">On E-learning platform create online certificate become badge</p>
-            <img src="full_arrow/full-arrow-right.svg" alt="" className="" />
+            <img src="/full_arrow/full-arrow-right.svg" alt="" className="" />
           </div>
           <div className="flex flex-col items-center gap-[10px]">
             <p className="medium36 bg-gradient-to-r from-sky-500 to-indigo-500 text-transparent bg-clip-text">Our Badge</p>
@@ -23,7 +23,7 @@ export function Section2() {
         </div>
 
         <div className="flex flex-row items-center gap-[20px] self-end mr-[40px]">
-          <img src="full_arrow/full-arrow-down.svg" alt="" className="" />
+          <img src="/full_arrow/full-arrow-down.svg" alt="" className="" />
           <p className="light24 w-[165px]">Collect badges on ProveSelf</p>
         </div>
 
@@ -34,7 +34,7 @@ export function Section2() {
           </div>
           <div className="flex flex-col items-center ml-[48px] mr-[50px]">
             <p className="light24 text-center w-[359px]">Create our certificate from collection badge as E-learning platform specified</p>
-            <img src="full_arrow/full-arrow-left.svg" alt="" className="" />
+            <img src="/full_arrow/full-arrow-left.svg" alt="" className="" />
           </div>
           <div className="flex flex-col items-center gap-[25px]">
             <p className="medium36 bg-gradient-to-r from-sky-500 to-indigo-500 text-transparent bg-clip-text">Collection Badge</p>

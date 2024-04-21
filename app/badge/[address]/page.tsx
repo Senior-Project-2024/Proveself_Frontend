@@ -1,6 +1,7 @@
 'use client'
 import Button from "@/components/Button";
 import Footer from "@/components/Footer";
+import HintVerification from "@/components/Hint/HintVerification";
 import Navbar from "@/components/Navbars/Navbar";
 import Check from "@/components/SVG/Check";
 import Copy from "@/components/SVG/Copy";
@@ -11,6 +12,7 @@ import RightFlower from "@/components/SVG/RightFlower";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FacebookShareButton, LineShareButton, TwitterShareButton, LinkedinShareButton } from "react-share";
 
 export default function Address({params} : Readonly<{ params : { address : string}}>) {
   const path = usePathname();
@@ -158,25 +160,57 @@ export default function Address({params} : Readonly<{ params : { address : strin
                 <p className={`${isCopied ? "block" : "hidden"} text-brand-600 medium20`}>Copied!</p>
               </button>
             </div>
+            
             <div className="flex flex-row gap-2 mt-[16px] mb-[12px]">
-              <Button text="Facebook" bgcolor="bg-[#1877F2]" py="py-[15px]" px="px-[12px]" hover="hover:bg-[#0053BF]" gap="gap-[10px]">
-                <img src="/social/facebook.svg" alt="" />
-              </Button>
-              <Button text="Line" bgcolor="bg-[#00C200]" py="py-[14.5px]" px="px-[16px]" hover="hover:bg-[#028D02]" gap="gap-[10px]">
-                <img src="/social/line.svg" alt="" />
-              </Button>
+              <FacebookShareButton
+                url={"https://portfolio-teal-sigma-86.vercel.app/"}>
+                  <div className="bg-[#1877F2] py-[15px] px-[12px] hover:bg-[#0053BF]
+                    flex flex-row gap-[10px] rounded-lg
+                    transition-all duration-500"
+                  >
+                    <img src="/social/facebook.svg" alt="" />
+                    <p className="text-white medium20">Facebook</p>
+                  </div>
+              </FacebookShareButton> 
+              <LineShareButton
+                url={"https://portfolio-teal-sigma-86.vercel.app/"}
+              >
+                <div className="bg-[#00C200] py-[15px] px-[12px] hover:bg-[#028D02]
+                  flex flex-row gap-[10px] rounded-lg
+                  transition-all duration-500"
+                >
+                  <img src="/social/line.svg" alt="" />
+                  <p className="text-white medium20">Line</p>
+                </div>
+              </LineShareButton>
             </div>
-            <div className="flex flex-row gap-2">
-              <Button text="Twitter" bgcolor="bg-[#040404]" py="py-[14.5px]" px="px-[16px]" hover="hover:bg-[#2C2C2C]" gap="gap-[10px]">
-                <img src="/social/X.svg" alt="" />
-              </Button>
-              <Button text="LinkedIn" bgcolor="bg-[#0A66C2]" py="py-[14.5px]" px="px-[16px]" hover="hover:bg-[#003163]" gap="gap-[10px]">
-                <img src="/social/linkedIn.svg" alt="" />
-              </Button>
+            <div className="flex flex-row gap-2 z-10">
+              <TwitterShareButton
+                url={"https://portfolio-teal-sigma-86.vercel.app/"}
+              >
+                <div className="bg-[#040404] py-[15px] px-[12px] hover:bg-[#2C2C2C]
+                  flex flex-row gap-[10px] rounded-lg
+                  transition-all duration-500"
+                >
+                  <img src="/social/X.svg" alt="" />
+                  <p className="text-white medium20">Twitter</p>
+                </div>
+              </TwitterShareButton>
+              <LinkedinShareButton
+                url={"https://portfolio-teal-sigma-86.vercel.app/"}
+              >
+                <div className="bg-[#0A66C2] py-[15px] px-[12px] hover:bg-[#003163]
+                  flex flex-row gap-[10px] rounded-lg
+                  transition-all duration-500"
+                >
+                  <img src="/social/linkedIn.svg" alt="" />
+                  <p className="text-white medium20">LinkedIn</p>
+                </div>
+              </LinkedinShareButton>
             </div>
             <div className="flex flex-row gap-[6px] mt-[28px] mb-[16px]">
               <p className="regular24">Verify Badge</p>
-              <img src="/help-circle.svg" alt="" />
+              <HintVerification/>
             </div>
             <div className="group">
               <button className={`bg-brand-600 px-[15px] py-[10px] rounded-lg flex flex-row items-center gap-[12px] ${isCopiedToken && "gap-[8px]"}

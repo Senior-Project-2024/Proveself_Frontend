@@ -23,6 +23,7 @@ export default function BadgeSection() {
     prevArrow: <PrevArrow classname="hover:fill-black" currentSlide={currentBadge} setCurrentSlide={setCurrentBadge} maxSlide={mockBadge.length - 1}/>
   };
   return (
+    // If have atleast 1 badge
     mockBadge.length != 0 ? 
     <section className="flex flex-col items-center pt-[62px] pb-[37px]">
       <div className="flex flex-row gap-[25px] mb-[45px]">
@@ -33,21 +34,34 @@ export default function BadgeSection() {
         </div>
         <RightFlower fill="black" />
       </div>
-      <div className={`${mockBadge.length <= 3 ? "w-[400px]" : "w-[1000px]"} `}>
-        <Slider {...settings2} className="pb-[20px]">
-        {
-          mockBadge?.map((data)=>{
-            return <div className="pt-[40px]" key={data.id}>
-              <div className="flex flex-row justify-center">
-                <Link href={"/badge/"+data.id} className=" image">
-                  <img src={data.img} alt="" className="w-[313px] h-[337px]" />
-                </Link>
-              </div>
+      {
+        // If 1 badge
+        mockBadge.length == 1 ?
+          <div className="pt-[20px]">
+            <div className="flex flex-row justify-center">
+              <Link href={"/badge/"+mockBadge[0].id} className=" image">
+                <img src={mockBadge[0].img} alt="" className="h-[400px]" />
+              </Link>
             </div>
-          })
-        }
-        </Slider>
-      </div>
+          </div>
+        :
+        // If more 2 badges
+        <div className={`${mockBadge.length <= 3 ? "w-[400px]" : "w-[1000px]"} `}>
+          <Slider {...settings2} className="pb-[20px]">
+          {
+            mockBadge?.map((data)=>{
+              return <div className="pt-[40px]" key={data.id}>
+                <div className="flex flex-row justify-center">
+                  <Link href={"/badge/"+data.id} className=" image">
+                    <img src={data.img} alt="" className="w-[313px] h-[337px]" />
+                  </Link>
+                </div>
+              </div>
+            })
+          }
+          </Slider>
+        </div>
+      }
       <div className="border-[3px] border-blue-300 shadow-thin-more flex flex-col items-center px-[64px] py-[28px] mt-[75px] relative">
         <img src="/small-frame.svg" alt="" className="absolute -top-2 -left-2 " />
         <img src="/small-frame.svg" alt="" className="absolute -top-2 -right-2 " />
@@ -66,6 +80,7 @@ export default function BadgeSection() {
       <Link href={"/badge"} className="regular24 underline mt-[55px]">View all badge</Link>
     </section>
     :
+    // If no badge
     <BadgeSectionNoData/>
     
   );

@@ -5,10 +5,10 @@ import { typeConfirm } from "@/lib/type/confirmEmail";
 import { API_sendEmail } from "@/lib/API";
 import { useToast } from "@chakra-ui/react";
 interface IModalConfirmEmail{
+  // setConfirmEmail = setStateOpen
   setConfirmEmail : any
   email: string
   typeConfirm : typeConfirm
-  
 }
 
 export default function ModalConfirmEmail({setConfirmEmail, email, typeConfirm} : IModalConfirmEmail){

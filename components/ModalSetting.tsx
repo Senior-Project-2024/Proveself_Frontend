@@ -20,24 +20,11 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
   const [errorSubmitPassword, setErrorSubmitPassword] = useState();
   const toastIdRef = useRef<any>(null)
   // storage user/organization data of cookie storage
-  const [storeDataUser, setStoreDataUser] = useState<TgeneralData>({
-    email: "",
-    password: "",
-    username: "",
-    fName: "",
-    lName: "",
-    telNo: "",
-    role: ""
-  });
-  const [storeDataOrganize, setStoreDataOrganize] = useState<TgeneralDataOrganize>({
-    email : "",
-    name: "",
-    telNo: "",
-    role: ""
-  })
+  const [storeDataUser, setStoreDataUser] = useState<any>({});
+  const [storeDataOrganize, setStoreDataOrganize] = useState<any>({})
   // -----------------------------------------------------------------------------------//
 
-  // useForm for user
+  // useForm for update "Profile" User
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<editProfileType>({
     defaultValues : {
       firstname : "",
@@ -47,6 +34,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
     resolver : yupResolver(editProfileSchema)
   });
 
+  // useForm for update "Profile" Organization
   const { register : registerOrganize, handleSubmit : handleSubmitOrganize, watch : watchOrganize, formState: { errors : errrorsOrganize }, setValue : setValueOrganize} = useForm<editProfileOrganizeType>({
     defaultValues : {
       name : "",
@@ -55,7 +43,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
     resolver : yupResolver(editProfileOrganizeSchema)
   });
   
-
+  // useForm for update "Password" User and Organization
   const { register : registerPassword, handleSubmit : handleSubmitPassword, watch : watchPassword, formState: { errors : errorsPassword }, setValue : setValuePassword} = useForm<editPasswordType>({
     defaultValues : {
       currentpassword : "",
@@ -74,14 +62,15 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
     isClosable: true,
     })
     try{
-      const result = await API_updateProfile(
-        data.firstname, data.lastname, data.phone
-      );
+      await API_updateProfile(storeDataUser.id, {
+        fName : data.firstname,
+        lName : data.lastname,
+        telNo : data.phone.split("-").join(""),
+      });
       setStoreDataUser({...storeDataUser, fName : data.firstname, lName : data.lastname, telNo : data.phone});
-      setCookie("data-user", {...storeDataUser, fName : data.firstname, lName : data.lastname, telNo : data.phone});
       // Notification change loading to success 
       toast.update(toastIdRef.current,{
-        title: 'Profile updating...',
+        title: 'Profile update success',
         description: "We've updated your profile successful.",
         status: 'success',
         duration: 5000,
@@ -91,7 +80,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
       // Notification change loading to failed
       toast.update(toastIdRef.current,{
         title: 'Edit profile failed.',
-        description: error.response.data,
+        description: error.response.data.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -109,11 +98,11 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
     isClosable: true,
     })
     try{
-      const result = await API_updateProfileOrganize(
-        data.name, data.phone
-      );
-      setStoreDataOrganize({...storeDataOrganize, name : data.name, telNo : data.phone});
-      setCookie("data-organization", {...storeDataOrganize, name : data.name, telNo : data.phone});
+      await API_updateProfile(storeDataOrganize.id, {
+        organizeName : data.name,
+        landlineNumber : data.phone,
+      });
+      setStoreDataOrganize({...storeDataOrganize, organizeName : data.name, landlineNumber : data.phone});
       // Notification change loading to success 
       toast.update(toastIdRef.current,{
         title: 'Profile organization updated.',
@@ -126,12 +115,11 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
       // Notification change loading to failed
       toast.update(toastIdRef.current,{
         title: 'Edit profile organization failed.',
-        description: error.response.data,
+        description: error.response.data.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.log(error.response)
     }
   };
   
@@ -144,7 +132,17 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
       isClosable: true,
     })
     try{
-      await API_updatePassword( isUser ? "user" : "organize" , data.currentpassword, data.newpassword);
+      if(isUser){
+        await API_updateProfile( storeDataUser.id , {
+          password : data.currentpassword,
+          newPassword : data.newpassword
+        });
+      }else{
+        await API_updateProfile( storeDataOrganize.id , {
+          password : data.currentpassword,
+          newPassword : data.newpassword
+        });
+      }
       toast.update(toastIdRef.current,{
         title: 'Password updated.',
         description: "We've updated your password successful.",
@@ -156,36 +154,21 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
       setValuePassword("newpassword", "");
       setValuePassword("confirmnewpassword", "");
     }catch(error){
+      console.log(error.response)
       toast.update(toastIdRef.current,{
         title: 'Edit password failed.',
-        description: error.response.data,
+        description: error.response.data.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      setErrorSubmitPassword(error.response.data)
+      setErrorSubmitPassword(error.response.data.message)
     }
   }; 
-  const data_user = {
-    email: "tyzaza4@mail.com",
-    password: "party",
-    username: "tyzaza16",
-    fName: "Sorathorn",
-    lName: "Kaewchotchuangkul",
-    telNo: "0968292053",
-    role: "user"
-  }
-
-  const data_organization = {
-    email: "tyzaza4@kmutt.ac.th",
-    name: "Academic",
-    telNo: "02081252",
-    role: "organize"
-  }
   useEffect(()=>{
     // get cookie from "user-data" and "organization-data"
-    setCookie("data-user", data_user);
-    setCookie("data-organization", data_organization);
+    // setCookie("data-user", data_user);
+    // setCookie("data-organization", data_organization);
     if(isUser){
       const dataUser = JSON.parse(getCookie("data-user") as string);
       setStoreDataUser(dataUser);
@@ -193,10 +176,10 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
       setValue("lastname", dataUser?.lName);
       setValue("phone", dataUser?.telNo);
     }else{
-      const dataOrganization = JSON.parse(getCookie("data-organization") as string);
+      const dataOrganization = JSON.parse(getCookie("data-organize") as string);
       setStoreDataOrganize(dataOrganization)
-      setValueOrganize("name", dataOrganization?.name);
-      setValueOrganize("phone", dataOrganization?.telNo);
+      setValueOrganize("name", dataOrganization?.organizeName);
+      setValueOrganize("phone", dataOrganization?.landlineNumber);
     }
   },[])
 
@@ -215,14 +198,14 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
               {/* email */}
               <div className="flex gap-[26px] items-center">
                 <p className="regular18">Email</p>
-                <p className="regular16">{data_user.email}</p>
+                <p className="regular16">{storeDataUser.email}</p>
               </div>
               <div className="flex flex-row gap-[20px] my-[15px]">
                 <div className="relative flex gap-[26px] items-center">
                   <p className="regular18">First Name</p>
                   <input 
                     type="text" 
-                    className="w-[297px] py-[8px] pl-[28px] rounded  regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500" 
+                    className="w-[297px] py-[8px] px-[28px] rounded  regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500" 
                     placeholder="First name"
                     {...register("firstname")}
                   />
@@ -231,7 +214,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
                   <p className="regular18">Last Name</p>
                   <input 
                     type="text" 
-                    className="w-[297px] py-[8px] pl-[28px] rounded  regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500" 
+                    className="w-[297px] py-[8px] px-[28px] rounded  regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500" 
                     placeholder="Last name"
                     {...register("lastname")}
                   />
@@ -244,7 +227,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
                   maskChar=""
                   defaultValue={watch().phone}
                   type="text" 
-                  className={`w-[221px] py-[8px] pl-[28px] rounded regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500 ${ errors.phone?.type && "focus:outline-red outline-red" } `}
+                  className={`w-[221px] py-[8px] px-[28px] rounded regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500 ${ errors.phone?.type && "focus:outline-red outline-red" } `}
                   placeholder="092-235-6623"
                   {...register("phone")}
                 />
@@ -271,8 +254,8 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
                   <p className="regular18">Organization Name</p>
                   <input 
                     type="text" 
-                    className="w-[297px] py-[8px] pl-[28px] rounded  regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500" 
-                    placeholder="First name"
+                    className="w-[297px] py-[8px] px-[28px] rounded  regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500" 
+                    placeholder="Organization name"
                     {...registerOrganize("name")}
                   />
                 </div>
@@ -281,14 +264,13 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
                 <p className="regular18">Organization Phone Number</p>
                 <input
                   type="text" 
-                  className={`w-[221px] py-[8px] pl-[28px] rounded regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500 ${ errrorsOrganize.phone?.type && "focus:outline-red outline-red" } `}
-                  placeholder="092-235-6623"
+                  className={`w-[221px] py-[8px] px-[28px] rounded regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500 ${ errrorsOrganize.phone?.type && "focus:outline-red outline-red" } `}
                   {...registerOrganize("phone")}
                 />
               </div>
               <p className="text-red light18 my-[10px]">{errrorsOrganize.phone?.message}</p>
               <button type="submit" 
-                disabled={ (watchOrganize().name == storeDataOrganize?.name) && (watchOrganize().phone == storeDataOrganize?.telNo)}
+                disabled={ (watchOrganize().name == storeDataOrganize?.organizeName) && (watchOrganize().phone == storeDataOrganize?.landlineNumber)}
                 className="w-fit bg-blue-300 rounded-[50px] px-[19px] py-[10px] medium18 text-white
                   transition hover:bg-blue-400 hover:scale-105 hover:ease-in-out hover:duration-300
                 disabled:bg-gray-100 disabled:scale-100"
@@ -307,7 +289,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
               <p className="regular18">Current Password</p>
               <input
                 type="password" 
-                className={`w-[297px] py-[8px] pl-[28px] rounded  regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500 `}
+                className={`w-[297px] py-[8px] px-[28px] rounded  regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500 `}
                 placeholder="**********"
                 {...registerPassword("currentpassword")}
               />
@@ -316,7 +298,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
               <p className="regular18">New Password</p>
               <input
                 type="password" 
-                className={`ml-[96px] w-[297px] py-[8px] pl-[28px] rounded  regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500 ${errorsPassword?.newpassword?.type && "input-fail"}`} 
+                className={`ml-[96px] w-[297px] py-[8px] px-[28px] rounded  regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500 ${errorsPassword?.newpassword?.type && "input-fail"}`} 
                 placeholder="**********"
                 {...registerPassword("newpassword")}
               />
@@ -326,7 +308,7 @@ export default function ModalSetting({ setOpenSetting, isUser } : Readonly<IModa
               <p className="regular18">Confirm New Password</p>
               <input
                 type="password" 
-                className={`ml-[26px] w-[297px] py-[8px] pl-[28px] rounded  regular16 outline outline-2 focus:bg-primary-100 focus:outline-primary-500 ${errorsPassword?.confirmnewpassword?.type && "input-fail"} `} 
+                className={`ml-[26px] w-[297px] py-[8px] px-[28px] rounded  regular16 outline outline-1 focus:bg-primary-100 focus:outline-primary-500 ${errorsPassword?.confirmnewpassword?.type && "input-fail"} `} 
                 placeholder="**********"
                 {...registerPassword("confirmnewpassword")}
               />

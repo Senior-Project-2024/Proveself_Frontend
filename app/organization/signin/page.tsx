@@ -51,8 +51,8 @@ export default function LoginOrganization() {
         duration: 9000,
         isClosable: true,
       })
-      setCookie("data-organize", res.data);
       router.push(`/organization`)
+      location.reload();
     }catch(err){
       toast.update(toastIdRef.current,{
         title: 'Login Fail.',

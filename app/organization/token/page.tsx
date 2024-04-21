@@ -4,13 +4,25 @@ import Button from "@/components/Button"
 import { useEffect, useState } from "react"
 import Copy from "@/components/SVG/Copy"
 import Check from "@/components/SVG/Check"
+import { API_generateTokenAPI } from "@/lib/API"
 
 export default function Token(){
   const [token, setToken] = useState<string>("");
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  
+  async function call_API_generateTokenAPI() {
+    try {
+      const res = await API_generateTokenAPI();
+      setToken(res.data.tokenApi);
+      console.log(res.data)
+    }catch(err){
+      console.log(err.response.data.message)
+    }
+  }
+
   useEffect(()=>{
     // call generate token API
-    setToken("5f2a394e4157a973948bfbc989832052d9d21195ac5216749090d465358487ea");
+    call_API_generateTokenAPI();
   },[])
   
   useEffect(()=>{
@@ -22,9 +34,7 @@ export default function Token(){
   },[isCopied])
   
   const handleGenerateToken = () =>{
-    setToken("");
-    // call generate token API
-    setToken("5f2a394e4157a973948bfbc989832");
+    call_API_generateTokenAPI();
   }
 
   return (

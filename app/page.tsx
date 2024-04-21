@@ -1,5 +1,6 @@
 "use client"
 import Navbar from "@/components/Navbars/Navbar"
+import { useRouter } from "next/navigation"
 import { useContext, useEffect } from "react"
 import { AuthContext } from "@/context/AuthContext"
 import { Section1 } from "@/components/HomeNotLogin/Section1"
@@ -12,18 +13,18 @@ import BadgeSection from "@/components/HomeLogin/BadgeSection"
 
 export default function Home() {
   const {statusAuth} = useContext(AuthContext);
+
   if(statusAuth?.isUserAuth == undefined){
     return <div></div>
   }
-
   return (
     <>
         <Navbar isUser={true} />
         {
           statusAuth?.isUserAuth ?
           <div className="pt-[90px]">
-           <BadgeSection />
-           <CertificateSection/>
+            <BadgeSection />
+            <CertificateSection/>
           </div>
           :
           <div>

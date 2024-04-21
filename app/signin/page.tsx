@@ -53,6 +53,7 @@ export default function Login() {
       })
       setCookie("data-user", res.data);
       router.push(`/`)
+      location.reload();
     }catch(err){
       toast.update(toastIdRef.current,{
         title: 'Login Fail.' ,
@@ -93,7 +94,7 @@ export default function Login() {
                     <input 
                         type="password" 
                         className={`w-[476px] h-[46px] input ${ (errorMessage ) && "input-fail"}`}
-                        placeholder="example@gmail.com"
+                        placeholder="********"
                         {...register("password")}
                     />
                     <div className="flex flex-row justify-between items-start">
