@@ -57,6 +57,7 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
     setCookie("data-user", {});
     setCookie("data-organize", {});
     console.log("Do layout")
+    console.log(process.env.NEXT_PUBLIC_BACKEND_HOST)
     if(!isPathNotAuth){
       callAuthAPI();
     }
