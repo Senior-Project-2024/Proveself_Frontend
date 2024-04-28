@@ -27,9 +27,9 @@ export default function EditBadgeTemplete({ params } : Readonly<{ params : { id 
   const [inputSkill, setInputSkill] = useState<string>("")
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<badgeTemplateType>({
     defaultValues : {
-      badgeName: "Badge",
-      description : "adada",
-      criteria : "adadadada",
+      // badgeName: "Badge",
+      // description : "adada",
+      // criteria : "adadadada",
       dayExpired : 0,
       monthExpired : 0,
       yearExpired : 0
@@ -59,36 +59,34 @@ export default function EditBadgeTemplete({ params } : Readonly<{ params : { id 
   },[])
 
   const onSubmit: SubmitHandler<badgeTemplateType> = async (data) => {
-    // if(file){
-      toastIdRef.current = toast({
-        title: 'Saving badge...',
-        description: "Loading",
-        status: 'loading',
-        duration: 9000,
+    toastIdRef.current = toast({
+      title: 'Saving badge...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
+    })
+    try{
+      // need API update badge
+      const res = await API_updateBadge(data, file , skillState, params.id);
+      toast.update(toastIdRef.current,{
+        title: 'Save badge successful',
+        description: "We've save badge successful.",
+        status: 'success',
+        duration: 5000,
         isClosable: true,
-      })
-      try{
-        // need API update badge
-        const res = await API_updateBadge(data, file , skillState, params.id);
-        toast.update(toastIdRef.current,{
-          title: 'Save badge successful',
-          description: "We've save badge successful.",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
-      }catch(error){
-        console.log(error)
-        toast.update(toastIdRef.current,{
-          title: 'Save badge failed.',
-          description: error.response.data.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-        console.log(error.response)
-      }
-    // }
+      });
+    }catch(error){
+      console.log(error)
+      toast.update(toastIdRef.current,{
+        title: 'Save badge failed.',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(error.response)
+    }
   }
   
   const deleteSkill = (skillDelete : string) =>{

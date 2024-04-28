@@ -34,10 +34,18 @@ export default function BadgeItem({badge, deleteBadge } : Readonly<IBadgeItem>) 
         <p className="ml-[62px] w-[212px] text-center">{badge.name}</p>
         <p className="ml-[84px] w-[380px] left-[90px] line-clamp-3">{badge.descriptionCourse}</p>
         <p className="ml-[46px] w-[380px] left-[90px] line-clamp-3">{badge.earningCriteria}</p>
-        <div className="ml-[26px] w-[128px] text-center">{ badge.expiration.year > 0 && badge.expiration.year + " year" }
-          <p className="block">{ badge.expiration.month > 0 && badge.expiration.month + " month" }</p> 
-          <p className="block">{ badge.expiration.day > 0 && badge.expiration.day + " day" }</p> 
-        </div>
+        {
+          badge.expiration.year === 0 && badge.expiration.month  === 0 && badge.expiration.day  === 0 ?
+          <div className="ml-[26px] w-[128px] text-center">
+            none
+          </div>  
+          :
+          <div className="ml-[26px] w-[128px] text-center">
+            { badge.expiration.year > 0 && badge.expiration.year + " year" }
+            <p className="block">{ badge.expiration.month > 0 && badge.expiration.month + " month" }</p> 
+            <p className="block">{ badge.expiration.day > 0 && badge.expiration.year + " day" }</p> 
+          </div>
+        }
         <button className="ml-[54px]" onClick={()=> {
           navigator.clipboard.writeText(badge.id)
           setIsCopied(true);
@@ -67,7 +75,9 @@ export default function BadgeItem({badge, deleteBadge } : Readonly<IBadgeItem>) 
           topic={"Are you sure you want to delete Badge template?"}
           describe={"If learner issue badge once. This badge template will cannot delete"}
           setStateOpen={setIsOpenConfirmDelete} 
-          yesFunction={ ()=>deleteBadge(badge.id) }
+          yesFunction={deleteBadge}
+          id = {badge.id}
+          
         />
       }
     </>

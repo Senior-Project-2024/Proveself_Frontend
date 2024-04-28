@@ -11,6 +11,7 @@ import axios from 'axios'
 import { AuthContext } from '@/context/AuthContext'
 import { getCookie, deleteCookie } from 'cookies-next'
 import { API_signout } from '@/lib/API'
+import getCookieFunction from '@/helper/getCookieFunction'
 
 export default function Navbar({isUser = true} : {isUser : boolean}) {
   const pathname = usePathname();
@@ -24,12 +25,10 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
   const [dataOrganize, setDataOrganize] = useState<any>("")
   
   useEffect(()=>{
-    if(statusAuth?.isUserAuth || statusAuth?.isOrganizeAuth){
-      const dataUser = JSON.parse(getCookie("data-user") as string) ?? "";
-      const dataOrganize = JSON.parse(getCookie("data-organize") as string) ?? "";
-      setDataUser(dataUser)
-      setDataOrganize(dataOrganize)
-    }
+    const dataUser = JSON.parse(getCookie("data-user") as string ?? "") ;
+    const dataOrganize = JSON.parse(getCookie("data-organize") as string ?? "");
+    setDataUser(dataUser)
+    setDataOrganize(dataOrganize)
     checkRoute(pathname, setStatusNav, setStatusNavOrganization);
   },[])
 
@@ -95,11 +94,11 @@ export default function Navbar({isUser = true} : {isUser : boolean}) {
             <div className="flex flex-row items-center gap-[10px] relative">
               <div className="flex flex-row gap-[12px]"> {/* profile + fullname */}
                 <div className="flex justify-center items-center w-[45px] h-[45px] rounded-[40px] outline outline-[3px] outline-[#F4EBFF] bg-black">
-                  <p className="font-Pridi regular24 text-[#F4EBFF]">{ isUser ? dataUser.fName?.charAt(0) + dataUser.lName?.charAt(0)  : dataOrganize.organizeName?.charAt(0) + dataOrganize.organizeName?.charAt(1)}</p>
+                  <p className="font-Pridi regular24 text-[#F4EBFF]">{ isUser ?  `${dataUser.fName?.charAt(0)}${dataUser.lName?.charAt(0)}`  :  `${dataOrganize.organizeName?.charAt(0)}${dataOrganize.organizeName?.charAt(1)}` }</p>
                 </div>
                 <div className="flex flex-col max-w-[200px]">
-                  <p className="truncate medium16">{isUser ? dataUser.fName + " " + dataUser.lName :  dataOrganize.organizeName}</p>
-                  <p className="truncate regular14">{isUser ? dataUser.email :  dataOrganize.email}</p>
+                  <p className="truncate medium16">{isUser ? dataUser?.fName + " " + dataUser?.lName :  dataOrganize?.organizeName}</p>
+                  <p className="truncate regular14">{isUser ? dataUser?.email :  dataOrganize?.email}</p>
                 </div>
               </div>
               <motion.button className="w-[32px] h-[32px] rounded-[28px] hover:bg-[#EDEDED] flex flex-row justify-center items-center"

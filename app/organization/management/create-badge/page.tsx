@@ -26,7 +26,7 @@ export default function CreateBadgeTemplete() {
     resolver : yupResolver(badgeTemplateSchema)
   });
   const toastIdRef = useRef<any>(null)
-  const [file, setFile] = useState<File | null>();
+  const [file, setFile] = useState<File | null>(null);
   const [base64, setBase64] = useState<any>();
   
   const onSubmit: SubmitHandler<badgeTemplateType> = async (data) => {
@@ -48,6 +48,15 @@ export default function CreateBadgeTemplete() {
           duration: 5000,
           isClosable: true,
         });
+        setValue('badgeName',"")
+        setValue('criteria',"")
+        setValue('description',"")
+        setValue('linkCourse',"")
+        setValue('dayExpired', 0)
+        setValue('monthExpired',0)
+        setValue('yearExpired',0)
+        setSkillState([])
+        setFile(null)
       }catch(error){
         console.log(error)
         toast.update(toastIdRef.current,{

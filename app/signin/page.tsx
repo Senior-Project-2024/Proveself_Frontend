@@ -52,8 +52,9 @@ export default function Login() {
         isClosable: true,
       })
       setCookie("data-user", res.data);
-      router.push(`/`)
-      location.reload();
+      window.location.href = "/";
+      // router.push(`/`)
+      // location.reload();
     }catch(err){
       toast.update(toastIdRef.current,{
         title: 'Login Fail.' ,

@@ -7,16 +7,17 @@ import { certificateTemplateSchema } from '@/lib/ScemaYup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Plus from '@/components/SVG/Plus';
 import Link from 'next/link';
-import { API_createCertificate } from '@/lib/API';
+import { API_createCertificate, API_getAllBadgeOfOrganize } from '@/lib/API';
 import { useToast } from "@chakra-ui/react";
 import { mockTempleteBadge, mockTempleteCertificate } from '@/lib/data/mockBadgeCer';
+import getCookieFunction from '@/helper/getCookieFunction';
 
 const IdBadgeRequired : string[] = [];
 
 export default function CreateCertificateTemplete() {
   const toast = useToast()
   const [skillState, setSkillState] = useState<string[]>([])
-  const [badgeRequired, setBadgeRequired] = useState<any>(); 
+  const [badgeRequired, setBadgeRequired] = useState<any>([]); 
   const [badgeListSelect, setBadgeListSelect] = useState<any>();
   const [openBadgeList, setOpenBadgeList] = useState<boolean>(false)
   const [inputSkill, setInputSkill] = useState<string>("")
@@ -38,27 +39,19 @@ export default function CreateCertificateTemplete() {
   const [base64, setBase64] = useState<any>();
   
   useEffect(()=>{
+    
     const tempBadgeRequired : any = [];
     const tempBadgeListSelect : any = [];
-    mockTempleteBadge?.forEach((badge)=>{
-      let foundBadgeRequired = false;
-      const length = IdBadgeRequired.length;
-      let i = 0;
-      console.log(length);
-      while((i < length) && !foundBadgeRequired){
-        if(badge.id === IdBadgeRequired[i]){
-          foundBadgeRequired = true;
-        }
-        i++;
-      }
-      if(foundBadgeRequired){
-        tempBadgeRequired.push(badge);
-      }else{
-        tempBadgeListSelect.push(badge);
-      }
+    API_getAllBadgeOfOrganize(getCookieFunction("data-organize").id)
+    .then((res)=>{
+      console.log(res.data)
+      setBadgeListSelect(res.data)
+    }).catch((err)=>{
+      console.log(err.response.data.message)
     })
+    
     setBadgeRequired(tempBadgeRequired)
-    setBadgeListSelect(tempBadgeListSelect)
+    // setBadgeListSelect(tempBadgeListSelect)
   },[])
 
   const onSubmit: SubmitHandler<certificateTemplateType> = async (data) => {
@@ -71,7 +64,7 @@ export default function CreateCertificateTemplete() {
         isClosable: true,
       })
       try{
-        const res = await API_createCertificate(data);
+        const res = await API_createCertificate(data, file, skillState, badgeRequired);
         toast.update(toastIdRef.current,{
           title: 'Create certificate successful',
           description: "We've create new certificate successful.",
@@ -79,6 +72,15 @@ export default function CreateCertificateTemplete() {
           duration: 5000,
           isClosable: true,
         });
+        setValue("certificateName", "")
+        setValue("criteria", "")
+        setValue("description", "")
+        setValue('dayExpired', 0)
+        setValue('monthExpired',0)
+        setValue('yearExpired',0)
+        setSkillState([])
+        resetBadgeRequired()
+        setFile(null)
       }catch(error){
         console.log(error)
         toast.update(toastIdRef.current,{
@@ -91,6 +93,11 @@ export default function CreateCertificateTemplete() {
         console.log(error.response)
       }
     }
+  }
+
+  const resetBadgeRequired = () =>{
+    setBadgeListSelect([...badgeListSelect, ...badgeRequired])
+    setBadgeRequired([])
   }
   
   const deleteSkill = (skillDelete : string) =>{
@@ -206,9 +213,9 @@ export default function CreateCertificateTemplete() {
             </div>
           </div>
           {/* Badge Image */}
-          <div className="flex flex-col gap-[12px] relative">
+          <div className="flex flex-col gap-[12px]">
             <p className="light24">Certificate Image<span className="text-red">*</span></p>
-            <div className="border-dashed border rounded-[6px] border-brand-700 w-full h-[300px] bg-brand-50
+            <div className="border-dashed border rounded-[6px] border-brand-700 py-[32px] w-full bg-brand-50
               flex flex-col items-center justify-center relative cursor-pointer"
             >
               {/* Input hidden */}
@@ -216,16 +223,19 @@ export default function CreateCertificateTemplete() {
                 accept="image/*"
                 onChange={ async (e)=> { 
                   setFile(e.target.files ? e.target.files[0] : null);
-                  console.log(e.target.files?.length == 0)
                   if(e.target.files?.length !== 0){ // No files
                     setBase64(await toBase64(e.target.files && e.target.files[0]))
                   }
                 }} 
               />
-              <div className="p-[18px] rounded-full bg-[#DCDCE4]">
-                <img src="/upload.svg" alt="" />
-              </div>
-              {/* <img src={base64} alt="" className="w-[300px] h-[300px]" /> */}
+              {
+                file?.name ?
+                <img src={base64} alt="" className="h-[216px]" />
+                :
+                <div className="p-[18px] rounded-full bg-[#DCDCE4]">
+                  <img src="/upload.svg" alt="" />
+                </div>
+              }
               {
                 file?.name ? 
                 <p className="light18 text-gray-200 mt-[11px] mb-[11px]">{file?.name}</p>

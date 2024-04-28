@@ -7,41 +7,109 @@ import Footer from '@/components/Footer';
 import BadgeItem from '@/components/Manage/BadgeItem';
 import CertificateItem from '@/components/Manage/CertificateItem';
 import { useRouter } from 'next/navigation';
-import { API_getAllBadge } from '@/lib/API';
+import { API_deleteBadge, API_deleteCertificate, API_getAllBadgeOfOrganize, API_getAllCertificateOfOrganize } from '@/lib/API';
+import { getCookie } from 'cookies-next';
+import { useToast } from '@chakra-ui/react';
+import getCookieFunction from '@/helper/getCookieFunction';
 
 
 export default function Management() {
+  const toast = useToast()
+  const toastIdRef = useRef<any>(null)
   const router = useRouter();
   const [statusManage, setStatusManage] = useState<"badge" | "certificate">("badge");
   const ref = useRef(null);
   const isInView = useInView(ref, {
       once: true,
   });
-  const [badge, setBadge] = useState(mockTempleteBadge);
-  const [certificate, setCertificate] = useState(mockTempleteCertificate);
+  const [badge, setBadge] = useState<any>([]);
+  const [certificate, setCertificate] = useState<any>([]);
 
   useEffect(()=>{
-    API_getAllBadge()
+    const dataOrganize = JSON.parse(getCookie("data-organize") as string);
+    API_getAllBadgeOfOrganize(dataOrganize.id)
     .then((res)=>{
-      console.log(res.data)
       setBadge(res.data)
     }).catch((err)=>{
       console.log(err.response.data.message)
     })
+
+    API_getAllCertificateOfOrganize(dataOrganize.id)
+    .then((res)=>{
+      console.log(res.data)
+      setCertificate(res.data)
+    }).catch((err)=>{
+      console.log(err.response.data.message)
+    })
+
+
   },[])
   
-  const deleteBadge = ( id : string ) => {
-    const newBadge = badge.filter((data)=>{
-      return data.id !== id;
+  const deleteBadge = async ( id : string ) => {
+    toastIdRef.current = toast({
+      title: 'deleting badge...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
     })
-    setBadge([...newBadge])
+    try{
+      await API_deleteBadge(id)
+      toast.update(toastIdRef.current,{
+        title: 'delete badge templete successful',
+        description: "We've delete badge templete successful.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      const newBadge = badge.filter((data : any)=>{
+        return data.id !== id;
+      })
+      setBadge([...newBadge])
+    }catch(error){
+      toast.update(toastIdRef.current,{
+        title: 'delete badge templete failed.',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(error.response.data.message)
+    }
   }
 
-  const deleteCertificate = ( id : string ) => {
-    const newCeritifcate = certificate.filter((data)=>{
-      return data.id !== id;
+  const deleteCertificate = async ( id : string ) => {
+    toastIdRef.current = toast({
+      title: 'deleting certificate...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
     })
-    setCertificate([...newCeritifcate])
+    try{
+      await API_deleteCertificate(id)
+      toast.update(toastIdRef.current,{
+        title: 'delete certificate templete successful',
+        description: "We've delete certificate badge templete successful.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      const newCeritifcate = certificate.filter((data : any)=>{
+        return data.id !== id;
+      })
+      setCertificate([...newCeritifcate])
+    }catch(error){
+      toast.update(toastIdRef.current,{
+        title: 'delete certificate templete failed.',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(error.response.data.message)
+    }
+    
   }
   
   const variants = {
@@ -118,7 +186,7 @@ export default function Management() {
           {/* list Badge */}
           <div className="flex flex-col overflow-y-scroll h-[780px] custom-scroll">
             {
-              badge.map((badge, i)=>{
+              badge.map((badge : any, i : number)=>{
                 return (
                   <motion.div className="flex flex-col items-center" key={badge.id}
                     custom={i}
@@ -153,7 +221,7 @@ export default function Management() {
 
           <div className="flex flex-col overflow-y-scroll h-[780px] custom-scroll">
             {
-              certificate.map((certificate, i)=>{
+              certificate.map((certificate : any, i : number)=>{
                 return (
                   <motion.div className="flex flex-col items-center" key={certificate.id}
                     custom={i}
@@ -174,3 +242,4 @@ export default function Management() {
     </div>
   )
 }
+

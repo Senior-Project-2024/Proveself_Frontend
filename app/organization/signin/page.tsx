@@ -51,8 +51,9 @@ export default function LoginOrganization() {
         duration: 9000,
         isClosable: true,
       })
-      router.push(`/organization`)
-      location.reload();
+      window.location.href = "/organization";
+      // router.push(`/organization`)
+      // location.reload();
     }catch(err){
       toast.update(toastIdRef.current,{
         title: 'Login Fail.',

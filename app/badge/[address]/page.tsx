@@ -2,12 +2,14 @@
 import Footer from "@/components/Footer";
 import HintVerification from "@/components/Hint/HintVerification";
 import Navbar from "@/components/Navbars/Navbar";
+import NotFound from "@/components/NotFound";
 import Check from "@/components/SVG/Check";
 import Copy from "@/components/SVG/Copy";
 import ExternalLink from "@/components/SVG/ExternalLink";
 import LeftFlower from "@/components/SVG/LeftFlower";
 import LinkIcon from "@/components/SVG/LinkIcon";
 import RightFlower from "@/components/SVG/RightFlower";
+import { API_getSpecificBadgeUser } from "@/lib/API";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,6 +19,10 @@ export default function Address({params} : Readonly<{ params : { address : strin
   const path = usePathname();
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [isCopiedToken, setIsCopiedToken] = useState<boolean>(false);
+  const [specificBadge, setSpecificBadge] = useState<any>();
+  const [cannotFound, setCannotFound] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(()=>{
     if(isCopied){
       setTimeout(()=>{
@@ -29,6 +35,22 @@ export default function Address({params} : Readonly<{ params : { address : strin
       }, 2000)
     }
   },[isCopied, isCopiedToken])
+
+  useEffect(()=>{
+    API_getSpecificBadgeUser(params.address)
+    .then((res)=>{
+      setSpecificBadge(res.data)
+      setIsLoading(false)
+    })
+    .catch((err)=>{
+      setCannotFound(true)
+      console.log(err.response.data.message)
+    })
+  },[])
+
+  if(cannotFound)
+    return <NotFound />
+
   return (
     <>
       <Navbar isUser={true}/>
@@ -36,7 +58,13 @@ export default function Address({params} : Readonly<{ params : { address : strin
         {/* Name badge */}
         <div className="flex flex-row items-center gap-[18px] ">
           <LeftFlower fill="black"/>
-          <p className="text-[48px] leading-[48px] font-medium uppercase">Specialist Data Science</p>
+          {
+            isLoading ? 
+            <p className="bg-gray-300 animate-pulse w-[600px] h-[46px] rounded-[2px]"></p>
+            :
+            <p className="text-[48px] leading-[48px] font-medium uppercase">{specificBadge?.name}</p>
+
+          }
           <RightFlower fill="black"/>
         </div>
         {/* Content 1 */}
@@ -44,97 +72,117 @@ export default function Address({params} : Readonly<{ params : { address : strin
           <div className="flex flex-row gap-[42px]">
             {/* Badge Image */}
             <div className="flex flex-row justify-center items-center w-[536px] h-[431px] border-2 border-[#000000] rounded-[16px]">
-              <img src="/badge_crop.png" alt="" className="w-[360px]" />
+              {
+                isLoading ? 
+                <div className="bg-gray-300 animate-pulse w-[360px] h-[360px] rounded-full"></div>
+                :
+                <img src={specificBadge?.imageInfo?.imageURL} alt="" className="h-[360px] " />
+              }
             </div>
             {/* Detail 1 */}
             <div className="flex-col mt-[12px]">
               <div className="flex flex-row gap-[42px]">
-                <p className="regular24">Issued by <span className="light24 text-brand-800">Skoodio course</span></p>
-                <p className="regular24">Issued Date : <span className="light24">25 December 2020</span></p>
+                {
+                  isLoading ?
+                  <div className="regular24 flex flex-row gap-1 items-center">Issued by <div className="bg-gray-300 animate-pulse w-[200px] h-[32px] rounded-[2px]"></div></div>
+                  :
+                  <p className="regular24">Issued by <span className="light24 text-brand-800">{specificBadge?.issuedBy}</span></p>
+                }
+                {
+                  isLoading ?
+                  <div className="regular24 flex flex-row gap-1 items-center">Issued Date : <div className="bg-gray-300 animate-pulse w-[200px] h-[32px] rounded-[2px]"></div></div>
+                  :
+                  <p className="regular24">Issued Date : <span className="light24">{specificBadge?.issuedDate}</span></p>
+                }
               </div>
               <div className="flex flex-row gap-[42px] mt-[22px] mb-[30px]">
-                <p className="regular24">Issued to <span className="light24">Pathinya Jongsupangpan</span></p>
-                <p className="regular24">Expiration Date : <span className="light24">none</span></p>
+                {
+                  isLoading ?
+                  <div className="regular24 flex flex-row gap-1 items-center">Issued to<div className="bg-gray-300 animate-pulse w-[300px] h-[32px] rounded-[2px]"></div></div>
+                  :
+                  <p className="regular24">Issued to <span className="light24">{specificBadge?.firstName + " " + specificBadge?.lastName}</span></p>
+                }
+                {
+                  isLoading ?
+                  <div className="regular24 flex flex-row gap-1 items-center">Expiration Date : <div className="bg-gray-300 animate-pulse w-[200px] h-[32px] rounded-[2px]"></div></div>
+                  :
+                  <p className="regular24">Expiration Date : <span className="light24">{specificBadge?.expireDate}</span></p>
+                }
               </div>
               {/* Detail course */}
-              <p className="w-[838px] line-clamp-[7] light24 mb-[24px]">
-                AIS DIGITAL TALENT | THE BLOOM is a 12 weeks internship program for 3rd and 4th-year students in the Digital Technology field who want to learn, develop skills, gain experience, and practice their working abilities through real projects alongside AIS's professionals in digital technology and innovation. The student will learn many courses on Technical Skills, People Skills, and Entrepreneurial Skills from AIS Academy, as well as opportunities to present their work on Demo day to AIS Management.
-              </p>
+              {
+                isLoading ?
+                <div className="flex flex-col gap-[6px]">
+                  <div className="bg-gray-300 animate-pulse w-[800px] h-[32px] rounded-[2px]"></div>
+                  <div className="bg-gray-300 animate-pulse w-[800px] h-[32px] rounded-[2px]"></div>
+                  <div className="bg-gray-300 animate-pulse w-[800px] h-[32px] rounded-[2px]"></div>
+                </div>
+                : 
+                <p className="w-[838px] line-clamp-[7] light24 mb-[24px]">
+                  {specificBadge?.descriptionCourse}
+                </p>
+              }
               {/* Link to course */}
-              <Link href={"https://www.skooldio.com/"} target="_blank">
-                <button className="flex flex-row items-center gap-[5px] px-[11px] py-[7px] border-[1.5px] border-black rounded-[14px]">
-                  <ExternalLink stroke="#292929"/>
-                  <p className="regular20">Course Detail</p>
-                </button>
-              </Link>
+              {
+                (specificBadge?.linkCourse && !isLoading )  &&
+                <Link href={specificBadge?.linkCourse} target="_blank">
+                  <button className="flex flex-row items-center gap-[5px] px-[11px] py-[7px] border-[1.5px] border-black rounded-[14px]">
+                    <ExternalLink stroke="#292929"/>
+                    <p className="regular20">Course Detail</p>
+                  </button>
+                </Link>
+              }
             </div>
           </div>
         </div>
         {/* Content 2*/}
-        <div className="flex flex-row gap-[50px]">
+        <div className="flex flex-row gap-[70px]">
           <div className="flex flex-col gap-[20px]">
             {/* Earning Criteria */}
             <div className="flex flex-col gap-2">
               <p className="regular24">Earning Criteria</p>
-              <p className="light24 w-[1000px]">Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations</p>
+              {
+                isLoading ?
+                <div className="flex flex-col gap-[6px]">
+                  <div className="bg-gray-300 animate-pulse w-[1000px] h-[32px] rounded-[2px]"></div>
+                  <div className="bg-gray-300 animate-pulse w-[1000px] h-[32px] rounded-[2px]"></div>
+                  <div className="bg-gray-300 animate-pulse w-[1000px] h-[32px] rounded-[2px]"></div>
+                </div>
+                : 
+                <p className="light24 w-[1000px]">{specificBadge?.earningCriteria}</p>
+              }
             </div>
             {/* Skills */}
             <div className="flex flex-col gap-2">
               <p className="regular24">Skills</p>
-              <div className="flex flex-wrap w-[1000px] gap-[10px]">
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
+              {
+                isLoading ?
+                <div className="flex flex-wrap w-[1000px] gap-[10px]">
+                  <div className="bg-gray-300 animate-pulse w-[116px] h-[32px] rounded"></div>
+                  <div className="bg-gray-300 animate-pulse w-[116px] h-[32px] rounded"></div>
+                  <div className="bg-gray-300 animate-pulse w-[116px] h-[32px] rounded"></div>
+                  <div className="bg-gray-300 animate-pulse w-[116px] h-[32px] rounded"></div>
                 </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
+                :
+                <div className="flex flex-wrap w-[1000px] gap-[10px]">
+                  {
+                    specificBadge?.skill.map((skill : string)=>{
+                      return <div key={skill} className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
+                        <p className="medium18 text-brand-600">{skill}</p>
+                    </div>
+                    })
+                  }                
                 </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-              </div>
+              }
             </div>
             {/* Evidence URL */}
             <div className="flex flex-col gap-2">
               <p className="regular24">Evidence URL</p>
               <ul className="flex flex-col gap-1 list-disc ml-[40px] light20 underline cursor-pointer">
-                <li><Link href="/badge" target="_blank">Evidence 1 description</Link></li>
-                <li><Link href="/badge" target="_blank">Evidence 2 description</Link></li>
+                {
+                  specificBadge?.evidenceURL &&
+                  <li><Link href={specificBadge?.evidenceURL} target="_blank">{specificBadge?.evidenceURL}</Link></li>
+                }
               </ul>
             </div>
           </div>

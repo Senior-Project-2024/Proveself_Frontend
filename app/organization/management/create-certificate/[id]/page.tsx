@@ -7,9 +7,10 @@ import { certificateTemplateSchema } from '@/lib/ScemaYup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Plus from '@/components/SVG/Plus';
 import Link from 'next/link';
-import { API_createCertificate } from '@/lib/API';
+import { API_createCertificate, API_getAllBadgeOfOrganize, API_getCertificateById, API_updateCertificate } from '@/lib/API';
 import { useToast } from "@chakra-ui/react";
 import { mockTempleteBadge, mockTempleteCertificate } from '@/lib/data/mockBadgeCer';
+import getCookieFunction from '@/helper/getCookieFunction';
 
 const IdBadgeRequired = ["65aea02ae74db679fd86bd14", "65aea02ae74db679fd86bd123"]
 const mockResponse = {
@@ -32,9 +33,9 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
   const [inputSearch, setInputSearch] = useState<string>("")
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<certificateTemplateType>({
     defaultValues : {
-      certificateName : "Certifiacte",
-      description : "adada",
-      criteria : "adadadada",
+      // certificateName : "Certifiacte",
+      // description : "adada",
+      // criteria : "adadadada",
       dayExpired :0,
       monthExpired : 0,
       yearExpired : 0
@@ -43,69 +44,83 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
   });
   const toastIdRef = useRef<any>(null)
   const inputSearchRef = useRef<any>(null)
-  const [file, setFile] = useState<File | null>();
+  const [file, setFile] = useState<File | null>(null);
+  const [imageInfo, setImageInfo] = useState<any>();
   const [base64, setBase64] = useState<any>();
   
   useEffect(()=>{
     const tempBadgeRequired : any = [];
     const tempBadgeListSelect : any = [];
-    mockTempleteBadge?.forEach((badge)=>{
-      let foundBadgeRequired = false;
-      const length = IdBadgeRequired.length;
-      let i = 0;
-      console.log(length);
-      while((i < length) && !foundBadgeRequired){
-        if(badge.id === IdBadgeRequired[i]){
-          foundBadgeRequired = true;
-        }
-        i++;
-      }
-      if(foundBadgeRequired){
-        tempBadgeRequired.push(badge);
-      }else{
-        tempBadgeListSelect.push(badge);
-      }
+    API_getAllBadgeOfOrganize(getCookieFunction("data-organize").id)
+    .then((resAllBadge)=>{
+      console.log(resAllBadge.data)
+      API_getCertificateById(params.id)
+      .then((resCertificate)=>{
+        // Loop for set current badgeRequired and badgeListSelect
+        resAllBadge.data.forEach((badge : any) => {
+          let foundBadgeRequired = false;
+          const length = resCertificate.data.badgeRequired.length;
+          let i = 0;
+          console.log(length);
+          while((i < length) && !foundBadgeRequired){
+            if(badge.id === resCertificate.data.badgeRequired[i]){
+              foundBadgeRequired = true;
+            }
+            i++;
+          }
+          if(foundBadgeRequired){
+            tempBadgeRequired.push(badge);
+          }else{
+            tempBadgeListSelect.push(badge);
+          }
+        })
+        setBadgeRequired(tempBadgeRequired)
+        setBadgeListSelect(tempBadgeListSelect)
+        // set current data
+        setValue("certificateName", resCertificate.data.name)
+        setValue("description", resCertificate.data.descriptionCourse)
+        setValue("criteria", resCertificate.data.earningCriteria)
+        setValue("dayExpired", resCertificate.data.expiration.day)
+        setValue("monthExpired", resCertificate.data.expiration.month)
+        setValue("yearExpired", resCertificate.data.expiration.year)
+        setSkillState(resCertificate.data.skills ?? [])
+        setImageInfo(resCertificate.data.imageInfo)
+      }).catch((err)=>{
+        console.log(err.response.data.message)
+      })
+    }).catch((err)=>{
+      console.log(err.response.data.message)
     })
-    setBadgeRequired(tempBadgeRequired)
-    setBadgeListSelect(tempBadgeListSelect)
-      setValue("certificateName", mockResponse.certificateName)
-      setValue("description", mockResponse.description)
-      setValue("criteria", mockResponse.criteria)
-      setValue("dayExpired", mockResponse.dayExpired)
-      setValue("monthExpired", mockResponse.monthExpired)
-      setValue("yearExpired", mockResponse.yearExpired)
-      setSkillState(mockResponse.skills)
+
   },[])
 
   const onSubmit: SubmitHandler<certificateTemplateType> = async (data) => {
-    if(file){
-      toastIdRef.current = toast({
-        title: 'Saving certificate...',
-        description: "Loading",
-        status: 'loading',
-        duration: 9000,
+    toastIdRef.current = toast({
+      title: 'Saving certificate...',
+      description: "Loading",
+      status: 'loading',
+      duration: 9000,
+      isClosable: true,
+    })
+    try{
+      const res = await API_updateCertificate(data, file, skillState, badgeRequired, params.id);
+      toast.update(toastIdRef.current,{
+        title: 'Save certificate successful',
+        description: "We've save certificate successful.",
+        status: 'success',
+        duration: 5000,
         isClosable: true,
-      })
-      try{
-        const res = await API_createCertificate(data);
-        toast.update(toastIdRef.current,{
-          title: 'Save certificate successful',
-          description: "We've save certificate successful.",
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-        });
-      }catch(error){
-        console.log(error)
-        toast.update(toastIdRef.current,{
-          title: 'Save certificate failed.',
-          description: error.response.data.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-        console.log(error.response)
-      }
+      });
+    }catch(error){
+      console.log(error)
+      toast.update(toastIdRef.current,{
+        title: 'Save certificate failed.',
+        description: error.response.data.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      console.log(error.response)
     }
   }
   
@@ -224,7 +239,7 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
           {/* Badge Image */}
           <div className="flex flex-col gap-[12px] relative">
             <p className="light24">Certificate Image<span className="text-red">*</span></p>
-            <div className="border-dashed border rounded-[6px] border-brand-700 w-full h-[300px] bg-brand-50
+            <div className="border-dashed border rounded-[6px] border-brand-700 py-[32px] w-full bg-brand-50
               flex flex-col items-center justify-center relative cursor-pointer"
             >
               {/* Input hidden */}
@@ -238,15 +253,18 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
                   }
                 }} 
               />
-              <div className="p-[18px] rounded-full bg-[#DCDCE4]">
-                <img src="/upload.svg" alt="" />
-              </div>
+              {
+                file?.name ?
+                <img src={base64} alt="" className="h-[216px]" />
+                :
+                <img src={imageInfo?.imageURL} alt="" className="h-[216px]" />
+              }
               {/* <img src={base64} alt="" className="w-[300px] h-[300px]" /> */}
               {
                 file?.name ? 
                 <p className="light18 text-gray-200 mt-[11px] mb-[11px]">{file?.name}</p>
                 :
-                <p className="regular18 text-red mt-[11px] mb-[11px]">No File chosen </p>
+                <p className="light18 text-gray-200 mt-[11px] mb-[11px]">{imageInfo?.originalFilename}</p>
               }
               <div className="flex gap-[8px] mb-[8px]">
                 <p className="underline regular20">Click to upload</p>
@@ -404,7 +422,7 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
               disabled:bg-gray-100 disabled:scale-100
               " 
               disabled={ !watch().certificateName || !watch().criteria || watch().dayExpired < 0 || watch().monthExpired < 0 || watch().yearExpired < 0 
-                || !watch().description || !file?.name || badgeRequired.length < 2
+                || !watch().description || badgeRequired?.length < 2
               }
               type="submit"
             >
