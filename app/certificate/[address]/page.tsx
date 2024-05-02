@@ -15,6 +15,8 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import HintVerification from "@/components/Hint/HintVerification";
 import { FacebookShareButton, LineShareButton, LinkedinShareButton, TwitterShareButton } from "react-share";
+import { API_getSpecificCertificateUser } from "@/lib/API";
+import NotFound from "@/components/NotFound";
 
 
 export default function Address({params} : Readonly<{ params : { address : string}}>) {
@@ -22,6 +24,10 @@ export default function Address({params} : Readonly<{ params : { address : strin
   const path = usePathname();
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [isCopiedToken, setIsCopiedToken] = useState<boolean>(false);
+  const [specificCertificate, setSpecificCertificate] = useState<any>();
+  const [cannotFound, setCannotFound] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  
   const settings = {
     dots: true,
     infinite: true,
@@ -43,6 +49,21 @@ export default function Address({params} : Readonly<{ params : { address : strin
       }, 2000)
     }
   },[isCopied, isCopiedToken])
+
+  useEffect(()=>{
+    API_getSpecificCertificateUser(params.address)
+    .then((res)=>{
+      setSpecificCertificate(res.data)
+      setIsLoading(false)
+    })
+    .catch((err)=>{
+      setCannotFound(true)
+      console.log(err.response.data.message)
+    })
+  },[])
+
+  if(cannotFound)
+    return <NotFound name="Certificate" />
   return (
     <>
       <Navbar isUser={true}/>
@@ -50,40 +71,60 @@ export default function Address({params} : Readonly<{ params : { address : strin
         {/* Name Certificate */}
         <div className="flex flex-row items-center gap-[18px] ">
           <LeftFlower fill="#FDB022"/>
-          <p className="text-[48px] leading-[48px] font-medium uppercase">Specialist react native</p>
+            {
+              isLoading ? 
+              <p className="bg-gray-300 animate-pulse w-[600px] h-[46px] rounded-[2px]"></p>
+              :
+              <p className="text-[48px] leading-[48px] font-medium uppercase">{specificCertificate?.name}</p>
+            }
           <RightFlower fill="#FDB022"/>
         </div>
         {/* Image certificate*/}
-        <img src="/certificate.png" alt="" className="w-[720px] h-[487px] shadow-thin mt-[60px]" />
+        {
+          isLoading ? 
+          <div className="bg-gray-300 animate-pulse w-[720px] h-[487px] shadow-thin mt-[60px]"></div>
+          :
+          <img src={specificCertificate?.imageInfo?.imageURL} alt="" className="w-[720px] h-[487px] shadow-thin mt-[60px]" />
+        }
+        {
+          isLoading && <div className="flex flex-row gap-[40px] my-[60px]">
+            <div className="bg-gray-300 w-[143px] h-[154px] animate-pulse rounded-[2px]"></div>
+            <div className="bg-gray-300 w-[143px] h-[154px] animate-pulse rounded-[2px]"></div>
+            <div className="bg-gray-300 w-[143px] h-[154px] animate-pulse rounded-[2px]"></div>
+            <div className="bg-gray-300 w-[143px] h-[154px] animate-pulse rounded-[2px]"></div>
+            <div className="bg-gray-300 w-[143px] h-[154px] animate-pulse rounded-[2px]"></div>
+            <div className="bg-gray-300 w-[143px] h-[154px] animate-pulse rounded-[2px]"></div>
+          </div>
+        }
         {/* Badge Slider */}
         {
           (mockBadge.length <= 6) ?
           <div className="flex flex-row gap-[40px] my-[60px]">
             {
-               mockBadge.map((data, i)=>{
+              specificCertificate?.fullBadgeRequire?.map((data : any, i : number)=>{
                 return ( 
                   <div className="" key={data.id}>
-                   <div className="flex flex-col items-center gap-[10px]">
+                    <div className="flex flex-col items-center gap-[10px]">
                       <Link href={"/certificate/"+data.id} className="image">
-                        <img src={data.img} alt="" className="w-[143px] h-[154px]" />
+                        <img src={data.imageInfo.imageURL} alt="" className="w-[143px] h-[154px]" />
                       </Link>
                       <Link href={"/certificate/"+data.id} className="w-[178px] text-center">{data.name}</Link>
                     </div>
                   </div>
                 )
-               })
+              })
             }
           </div>
           :  
           <div className="w-[1200px] my-[60px]">
             <Slider {...settings}>
               {
-                mockBadge.map((data, i)=>{
+                specificCertificate?.fullBadgeRequire?.map((data : any, i: number)=>{
                   return ( 
                     <div className="" key={data.id}>
                       <div className="flex flex-col items-center gap-[10px]">
                         <Link href={"/certificate/"+data.id} className="image">
-                          <img src={data.img} alt="" className="w-[143px] h-[154px]" />
+                          <img src={data.imageInfo.imageURL} alt="" className="w-[143px] h-[154px]" />
                         </Link>
                         <Link href={"/certificate/"+data.id} className="w-[178px] text-center">{data.name}</Link>
                       </div>
@@ -98,74 +139,40 @@ export default function Address({params} : Readonly<{ params : { address : strin
         <div className="flex flex-row mb-[40px] justify-between w-[1395px]">
           <div className="flex flex-col gap-2">
             <p className="regular24">Description</p>
-            <p className="light24 w-[900px]">AIS DIGITAL TALENT | THE BLOOM is a 12 weeks internship program for 3rd and 4th-year students in the Digital Technology field who want to learn, develop skills, gain experience, and practice their working abilities through real projects alongside AIS's professionals in digital technology and innovation. The student will learn many courses on Technical Skills, People Skills, and Entrepreneurial Skills from AIS Academy, as well as opportunities to present their work on Demo day to AIS Management.</p>
+            <p className="light24 w-[900px]">{specificCertificate?.descriptionCourse}</p>
           </div>
           <div className="flex flex-col gap-[21px] items-end mt-[30px]">
-            <p className="regular24">Issued by <span className="light24 text-brand-800">Skoodio course</span></p>
-            <p className="regular24">Issued Date : <span className="light24">25 December 2020</span></p>
-            <p className="regular24">Issued to <span className="light24">Pathinya Jongsupangpan</span></p>
-            <p className="regular24">Expiration Date : <span className="light24">none</span></p>
+            <p className="regular24">Issued by <span className="light24 text-brand-800">{specificCertificate?.issuedBy}</span></p>
+            <p className="regular24">Issued to <span className="light24">{specificCertificate?.firstName + " " + specificCertificate?.lastName}</span></p>
+            <p className="regular24">Issued Date : <span className="light24">{specificCertificate?.issuedDate}</span></p>
+            <p className="regular24">Expiration Date : <span className="light24">{specificCertificate?.expireDate}</span></p>
           </div>
         </div>
         {/* Content 2*/}
-        <div className="flex flex-row gap-[50px]">
+        <div className="flex flex-row gap-[60px]">
           <div className="flex flex-col gap-[20px]">
             {/* Earning Criteria */}
             <div className="flex flex-col gap-2">
               <p className="regular24">Earning Criteria</p>
-              <p className="light24 w-[1000px]">Complete the internship program according to all requirements and conditions or success a long term and here this is some of Earning criteria l projects alongside Gestures and Body Parts Emojis based on people, which include different appearances, hand gestures, activities, professions, and family combinations</p>
+              <p className="light24 w-[1000px]">{specificCertificate?.earningCriteria}</p>
             </div>
             {/* Skills */}
-            <div className="flex flex-col gap-2">
-              <p className="regular24">Skills</p>
-              <div className="flex flex-wrap w-[1000px] gap-[10px]">
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
-                </div>
-                <div className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
-                  <p className="medium18 text-brand-600">Calculate</p>
+            {
+              specificCertificate?.skill && 
+              <div className="flex flex-col gap-2">
+                <p className="regular24">Skills</p>
+                <div className="flex flex-wrap w-[1000px] gap-[10px]">
+                  {
+                    specificCertificate?.skill?.map((skill : string)=>{
+                      return <div key={skill} className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
+                        <p className="medium18 text-brand-600">{skill}</p>
+                      </div>
+                    })
+                  }
+                  
                 </div>
               </div>
-            </div>
+            }
             
           </div>
           <div className="w-[3px] h-auto rounded-sm bg-[#D9D9D9]"></div>
