@@ -39,7 +39,7 @@ export function API_signout(role: Trole){
 
 export function API_updateProfile(id : string, body : any){
     return http.patch("/auth/" + id, body)
-  }
+}
 
 export function API_getAllBadgeUser(address : string){
   return http.get("/badges/getAllBadgeUser?publickey=0x" + address)
@@ -47,6 +47,18 @@ export function API_getAllBadgeUser(address : string){
 
 export function API_getSpecificBadgeUser(id : string){
   return http.get("/badges/getSpecificBadgeUser?id=" + id)
+}
+
+export function API_getAllCertificateUser(address : string){
+  return http.get("/certificates/getAllCertificateUser?publickey=0x" + address)
+}
+
+export function API_getSpecificCertificateUser(id : string){
+  return http.get("/certificates/getSpecificCertificateUser?id=" + id)
+}
+
+export function API_certificateUserCanMint(address : string){
+  return http.get("/certificates/organize?publickey=0x" + address)
 }
 
 
@@ -196,6 +208,17 @@ export function API_updateCertificate( certificate : certificateTemplateType, fi
 export async function API_auth(){
   return http.get("/auth/whoAmI");
 }
+
+
+export function API_verify(id : string){
+  return http.get("/verify/" + id)
+}
+
+export function API_mintCertificate(publickey : string, templateCode : string){
+  return http.get("/certificates/mint?publickey=" + publickey + "&templateCode=" + templateCode);
+}
+
+
 
 export function API_auth_fetch(session : string , sessionSigValue : string){
   return fetch("http://localhost:4000/auth/whoAmI" , {

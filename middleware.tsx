@@ -49,6 +49,9 @@ export async function middleware(request: NextRequest) {
   
   if( (path == "/organization/token" || path == "/organization/document" || path == "/organization/management") && !isAuthOrganization)
     return NextResponse.redirect(new URL('/organization/signin', request.url))
+  
+  if( (path == "/issue-certificate" || path == "/badge" || path == "/certificate") && !isAuthUser)
+    return NextResponse.redirect(new URL('/signin', request.url))
 
   return NextResponse.next()
 }
@@ -58,6 +61,9 @@ export const config = {
   matcher: [
     '/confirm',
     '/signin',
+    '/issue-certificate',
+    '/badge',
+    '/certificate',
     '/organization/signin',
     '/organization/token',
     '/organization/document',

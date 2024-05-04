@@ -67,7 +67,7 @@ export default function Badge() {
         {
           badgeEachCorse?.map((course: any)=>{
             return <div className="py-[48px] px-[120px] bg-white shadow-thin rounded-[14px] flex flex-col items-center gap-[46px] " key={course[0].name}>
-            <p className="text-[48px] font-medium self-start">{course[0].issuedBy}</p>
+            <p className="text-[48px] font-medium self-start ml-[40px]">{course[0].issuedBy}</p>
             <div className='w-[1500px]'>
             {
               course.length <= 3 ? 
@@ -80,7 +80,7 @@ export default function Badge() {
                           <div className={`${ (i+1) % 2 == 0 ? "bg-blue-300" : "bg-brand-800" }  rounded-[32px] w-full h-[353px] flex justify-center items-center`} >
                             <img src={data.imageInfo.imageURL} alt="" className="w-[313px] h-[337px]"/>
                           </div>
-                          <p className="medium30 text-blue-400 mt-[22px] mb-[18px]">{data.name}</p>
+                          <p className="medium30 text-blue-400 mt-[22px] mb-[18px] w-[332px] text-center">{data.name}</p>
                           <p className="light16 w-[344px] h-[72px] line-clamp-3 mb-[20px] ">{data.descriptionCourse}</p>
                           <Link href={`/badge/${data.id}`}>
                             <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700">
@@ -103,7 +103,7 @@ export default function Badge() {
                           <div className={`${ (i+1) % 2 == 0 ? "bg-blue-300" : "bg-brand-800" }  rounded-[32px] w-full h-[353px] flex justify-center items-center`} >
                             <img src={data.imageInfo.imageURL} alt="" className="w-[313px] h-[337px]"/>
                           </div>
-                          <p className="medium30 text-blue-400 mt-[22px] mb-[18px]">{data.name}</p>
+                          <p className="medium30 text-blue-400 mt-[22px] mb-[18px] w-[332px] text-center">{data.name}</p>
                           <p className="light16 w-[344px] h-[72px] line-clamp-3 mb-[20px] ">{data.descriptionCourse}</p>
                           <Link href={`/badge/${data.id}`}>
                             <button className="bg-brand-600 rounded-lg py-[10px] px-[30px] shadow-thin-more text-white medium20 border border-white hover:bg-brand-700">

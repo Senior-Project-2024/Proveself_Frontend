@@ -40,8 +40,8 @@ export default function CertificateSectionNoData() {
             <div className="w-[124px] h-[124px] bg-brand-700 flex justify-center items-center rounded-[100px]">
             <img src="/step_find.svg" alt="" className="" />
             </div>
-            <p className="medium30  mt-[27px] mb-[34px]">Create badge</p>
-            <p className="w-[403px] light24 text-center">Look for button related to create/mint badge and click it.</p>
+            <p className="medium30  mt-[27px] mb-[34px]">Create certificate</p>
+            <p className="w-[403px] light24 text-center">Look for button related to create/mint certificate and click it.</p>
           </div>
         </div>
       <div className="flex flex-row gap-[6px] mt-[212px] ">
