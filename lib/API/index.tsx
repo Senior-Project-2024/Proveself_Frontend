@@ -221,7 +221,7 @@ export function API_mintCertificate(publickey : string, templateCode : string){
 
 
 export function API_auth_fetch(session : string , sessionSigValue : string){
-  return fetch("http://localhost:4000/auth/whoAmI" , {
+  return fetch( process.env.NEXT_PUBLIC_BACKEND_HOST + "/auth/whoAmI" , {
     headers : {
       "Cookie" : `session=${session};session.sig=${sessionSigValue}`
     }
