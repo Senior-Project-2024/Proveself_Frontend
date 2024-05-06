@@ -163,11 +163,13 @@ export default function Address({params} : Readonly<{ params : { address : strin
                 <p className="regular24">Skills</p>
                 <div className="flex flex-wrap w-[1000px] gap-[10px]">
                   {
-                    specificCertificate?.skill?.map((skill : string)=>{
+                    specificCertificate?.skill ? specificCertificate?.skill?.map((skill : string)=>{
                       return <div key={skill} className="px-[12px] py-[3px] border border-brand-600 rounded-[4px]">
                         <p className="medium18 text-brand-600">{skill}</p>
                       </div>
                     })
+                    :
+                    <div>-</div>
                   }
                   
                 </div>

@@ -2,7 +2,7 @@
 import Slider from "react-slick";
 import PrevArrow from "./PrevArrow";
 import NextArrow from "./NextArrow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mockCertificate } from "@/lib/data/mockBadgeCer";
 import Link from "next/link";
 import LeftFlower from "../SVG/LeftFlower";
@@ -29,22 +29,24 @@ export default function CertificateSection() {
     prevArrow: <PrevArrow classname="fill-blue-100 hover:fill-blue-300" currentSlide={currentCertificate} setCurrentSlide={setCurrentCertificate} maxSlide={allCertificate.length - 1}/>
   };
 
-  const dataUser = getCookieFunction('data-user')
-    API_getAllCertificateUser(dataUser.keyStoreJsonV3.address)
-    .then((res : any)=>{
-      const getAllCertificate : any[] = []
-      res.data.forEach((certificateOfOrganize : any)=>{
-        certificateOfOrganize.forEach((certificate : any)=>{
-          getAllCertificate.push(certificate)
-        })
-      },[])
-      console.log(getAllCertificate)
-      setAllCertificate(getAllCertificate)
-      setIsLoading(false)
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+  useEffect(()=>{
+    const dataUser = getCookieFunction('data-user')
+      API_getAllCertificateUser(dataUser.keyStoreJsonV3.address)
+      .then((res : any)=>{
+        const getAllCertificate : any[] = []
+        res.data.forEach((certificateOfOrganize : any)=>{
+          certificateOfOrganize.forEach((certificate : any)=>{
+            getAllCertificate.push(certificate)
+          })
+        },[])
+        console.log(getAllCertificate)
+        setAllCertificate(getAllCertificate)
+        setIsLoading(false)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+  },[])
 
   if(isLoading){
     return <LoadingBadgeOrCerSection type="certificate"/>
