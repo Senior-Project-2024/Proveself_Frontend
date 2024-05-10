@@ -102,13 +102,15 @@ export default function Address({params} : Readonly<{ params : { address : strin
           <div className="flex flex-row gap-[40px] my-[60px]">
             {
               specificCertificate?.fullBadgeRequire?.map((data : any, i : number)=>{
-                return ( 
+                return (
+                  // If found tokenId is User have badge in SmartContact
+                  data?.tokenId &&
                   <div className="" key={data.id}>
                     <div className="flex flex-col items-center gap-[10px]">
-                      <Link href={"/certificate/"+data.id} className="image">
+                      <Link href={"/badge/"+data.tokenId} target="_blank" className="image">
                         <img src={data.imageInfo.imageURL} alt="" className="w-[143px] h-[154px]" />
                       </Link>
-                      <Link href={"/certificate/"+data.id} className="w-[178px] text-center">{data.name}</Link>
+                      <Link href={"/badge/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
                     </div>
                   </div>
                 )
@@ -121,15 +123,17 @@ export default function Address({params} : Readonly<{ params : { address : strin
               {
                 specificCertificate?.fullBadgeRequire?.map((data : any, i: number)=>{
                   return ( 
+                    // If found tokenId is User have badge in SmartContact
+                    data?.tokenId &&
                     <div className="" key={data.id}>
                       <div className="flex flex-col items-center gap-[10px]">
-                        <Link href={"/certificate/"+data.id} className="image">
+                        <Link href={"/badge/"+data.tokenId} target="_blank" className="image">
                           <img src={data.imageInfo.imageURL} alt="" className="w-[143px] h-[154px]" />
                         </Link>
-                        <Link href={"/certificate/"+data.id} className="w-[178px] text-center">{data.name}</Link>
+                        <Link href={"/badge/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
                       </div>
-                  </div>
-                )
+                    </div>
+                  )
                 })
               }
             </Slider>
@@ -188,7 +192,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
               <button className={`bg-white px-[14px] py-[10px] border border-[#D9D9D9] rounded-lg flex flex-row items-center gap-[12px] ${isCopied && "gap-[8px]"}
                 group-hover:bg-gray-50`}
                 onClick={()=> {
-                  navigator.clipboard.writeText(path)
+                  navigator.clipboard.writeText(window.location.origin + path)
                   setIsCopied(true);
                 }}>
                 {
@@ -203,7 +207,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
             </div>
             <div className="flex flex-row gap-2 mt-[16px] mb-[12px]">
               <FacebookShareButton
-                  url={"https://portfolio-teal-sigma-86.vercel.app/"}>
+                  url={window.location.origin + path}>
                     <div className="bg-[#1877F2] py-[15px] px-[12px] hover:bg-[#0053BF]
                       flex flex-row gap-[10px] rounded-lg
                       transition-all duration-500"
@@ -213,7 +217,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
                     </div>
                 </FacebookShareButton> 
                 <LineShareButton
-                  url={"https://portfolio-teal-sigma-86.vercel.app/"}
+                  url={window.location.origin + path}
                 >
                   <div className="bg-[#00C200] py-[15px] px-[12px] hover:bg-[#028D02]
                     flex flex-row gap-[10px] rounded-lg
@@ -226,7 +230,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
             </div>
             <div className="flex flex-row gap-2 z-10">
               <TwitterShareButton
-                  url={"https://portfolio-teal-sigma-86.vercel.app/"}
+                  url={window.location.origin + path}
                 >
                   <div className="bg-[#040404] py-[15px] px-[12px] hover:bg-[#2C2C2C]
                     flex flex-row gap-[10px] rounded-lg
@@ -237,7 +241,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
                   </div>
                 </TwitterShareButton>
                 <LinkedinShareButton
-                  url={"https://portfolio-teal-sigma-86.vercel.app/"}
+                  url={window.location.origin + path}
                 >
                   <div className="bg-[#0A66C2] py-[15px] px-[12px] hover:bg-[#003163]
                     flex flex-row gap-[10px] rounded-lg

@@ -10,17 +10,6 @@ import Link from 'next/link';
 import { API_createBadge, API_getBadgeById, API_updateBadge } from '@/lib/API';
 import { useToast } from "@chakra-ui/react";
 
-const mockResponse = {
-  badgeName: "Badge",
-  description : "ABC descript",
-  criteria : "1231221421",
-  dayExpired :0,
-  monthExpired : 0,
-  yearExpired : 4,
-  skills : [ "C", "Javascript", "Typescript", "MongoABCD" , "Xyzwe", "Genenative", "AIcontest" , "Blockchain", "3D-model", "Smartcontact", "GuildlineX"]
-}
-
-
 export default function EditBadgeTemplete({ params } : Readonly<{ params : { id : string }}>) {
   const toast = useToast();
   const [skillState, setSkillState] = useState<string[]>([])
@@ -51,7 +40,7 @@ export default function EditBadgeTemplete({ params } : Readonly<{ params : { id 
       setValue("dayExpired", data.expiration.day)
       setValue("monthExpired", data.expiration.month)
       setValue("yearExpired", data.expiration.year)
-      setSkillState(data.skill)
+      setSkillState(data.skill ?? [])
       setImageInfo(data.imageInfo)
     }).catch((err)=>{
       console.log(err.response.data)
@@ -76,16 +65,17 @@ export default function EditBadgeTemplete({ params } : Readonly<{ params : { id 
         duration: 5000,
         isClosable: true,
       });
+      window.location.href = "/organization/management";
     }catch(error){
       console.log(error)
       toast.update(toastIdRef.current,{
         title: 'Save badge failed.',
-        description: error.response.data.message,
+        // description: error.response.data.message,
+        description: "abc",
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.log(error.response)
     }
   }
   

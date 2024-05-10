@@ -20,10 +20,11 @@ export default function Footer() {
         <div className="flex flex-col items-center gap-[31px]">
           <p className="medium30">Feature</p>
           <div className="flex flex-col items-center gap-[14px] regular20 cursor-pointer">
-            <Link href={"/verification"} className="hover:underline">Verification</Link>
             <Link href={"/"}  className="hover:underline">Badge/ Certificate Collection</Link>
+            <Link href={"/verification"} className="hover:underline">Verification</Link>
+            <Link href={"/issue-certificate"} className="hover:underline">Issue Certificate</Link>
+            <Link href={"/organization/management"} className="hover:underline">Management</Link>
             <Link href={"/organization/document"} className="hover:underline">API Documentation</Link>
-            <Link href={"/token"} className="hover:underline">Token API</Link>
           </div>
         </div>
         <div className="flex flex-col items-end">
@@ -32,7 +33,7 @@ export default function Footer() {
           <p className="medium20">sorathorn.16@gmail.com</p>
         </div>
       </div>
-      <div className="bg-[#D9D9D9] w-[1600px] h-[2px] mt-[28px]"></div>
+      <div className="bg-[#D9D9D9] w-[1600px] h-[2px]"></div>
       <p>✍️ Made by Pathinya Jongsupangpan and Sorathorn Kaewchotchuangkul </p>
     </section>
   )

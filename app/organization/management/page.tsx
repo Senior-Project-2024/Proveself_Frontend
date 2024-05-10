@@ -6,18 +6,25 @@ import { mockTempleteBadge, mockTempleteCertificate } from '@/lib/data/mockBadge
 import Footer from '@/components/Footer';
 import BadgeItem from '@/components/Manage/BadgeItem';
 import CertificateItem from '@/components/Manage/CertificateItem';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { API_deleteBadge, API_deleteCertificate, API_getAllBadgeOfOrganize, API_getAllCertificateOfOrganize } from '@/lib/API';
 import { getCookie } from 'cookies-next';
 import { useToast } from '@chakra-ui/react';
-import getCookieFunction from '@/helper/getCookieFunction';
 
+function checkStatusManage(getStatusManage : string | null): "badge" | "certificate"{
+  if(getStatusManage == "certificate")
+    return "certificate"
+  else 
+    return "badge"
+}
 
 export default function Management() {
+  const searchParams = useSearchParams()
+  const getStatusManage = searchParams.get('statusManage')
   const toast = useToast()
   const toastIdRef = useRef<any>(null)
   const router = useRouter();
-  const [statusManage, setStatusManage] = useState<"badge" | "certificate">("badge");
+  const [statusManage, setStatusManage] = useState<"badge" | "certificate">(checkStatusManage(getStatusManage));
   const ref = useRef(null);
   const isInView = useInView(ref, {
       once: true,
@@ -96,7 +103,7 @@ export default function Management() {
         isClosable: true,
       });
       const newCeritifcate = certificate.filter((data : any)=>{
-        return data.id !== id;
+        return data._id !== id;
       })
       setCertificate([...newCeritifcate])
     }catch(error){

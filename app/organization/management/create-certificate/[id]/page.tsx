@@ -83,7 +83,7 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
         setValue("dayExpired", resCertificate.data.expiration.day)
         setValue("monthExpired", resCertificate.data.expiration.month)
         setValue("yearExpired", resCertificate.data.expiration.year)
-        setSkillState(resCertificate.data.skills ?? [])
+        setSkillState(resCertificate.data.skill ?? [])
         setImageInfo(resCertificate.data.imageInfo)
       }).catch((err)=>{
         console.log(err.response.data.message)
@@ -111,6 +111,7 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
         duration: 5000,
         isClosable: true,
       });
+      window.location.href = "/organization/management?statusManage=certificate";
     }catch(error){
       console.log(error)
       toast.update(toastIdRef.current,{

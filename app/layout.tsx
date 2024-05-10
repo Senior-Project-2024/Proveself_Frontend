@@ -9,6 +9,7 @@ import { API_auth, API_auth_fetch } from '@/lib/API'
 import { usePathname } from 'next/navigation'
 import { TdataUserOrganize } from '@/lib/type/generalData'
 import { setCookie } from "cookies-next";
+
 export default function RootLayout({children,}: {children: React.ReactNode}) {
   const path = usePathname();
   const [statusAuth, setStatusAuth] = useState<{isUserAuth: boolean | undefined, isOrganizeAuth: boolean | undefined}>({
@@ -56,7 +57,6 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
   useEffect(()=>{
     setCookie("data-user", {});
     setCookie("data-organize", {});
-    console.log("Do layout")
     console.log(process.env.NEXT_PUBLIC_BACKEND_HOST)
     if(!isPathNotAuth){
       callAuthAPI();
@@ -65,6 +65,10 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
   return (
     <html lang="en">
       <head>
+        <title>ProveSelf</title>
+        <meta charSet="utf-8" />
+        <meta name="description" content="Blockchain-based Digital Credential Service Platform" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/Server.png" />
       </head>
       <body>

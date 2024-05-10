@@ -16,9 +16,9 @@ export default function CreateBadgeTemplete() {
   const [inputSkill, setInputSkill] = useState<string>("")
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<badgeTemplateType>({
     defaultValues : {
-      badgeName: "Badge",
-      description : "adada",
-      criteria : "adadadada",
+      // badgeName: "Badge",
+      // description : "adada",
+      // criteria : "adadadada",
       dayExpired :0,
       monthExpired : 0,
       yearExpired : 0
@@ -57,6 +57,7 @@ export default function CreateBadgeTemplete() {
         setValue('yearExpired',0)
         setSkillState([])
         setFile(null)
+        window.location.href = "/organization/management";
       }catch(error){
         console.log(error)
         toast.update(toastIdRef.current,{

@@ -36,7 +36,7 @@ export default function CertificateItem({certificate, deleteCertificate } : Read
     <>
     <div className="flex flex-row py-[24px] light24 self-start justify-start items-center">
       <div className="ml-[23px] flex flex-col items-center gap-1 ">
-        <img src="/certificate.png" alt="certificate" className="w-[184px] " />
+        <img src={certificate.imageInfo.imageURL} alt="certificate" className="w-[184px] " />
         <p className="regular14 w-[184px] truncate ">ID : {certificate._id}</p>
       </div>
       <p className="ml-[51px] w-[220px] text-center">{certificate.name}</p>
@@ -57,7 +57,7 @@ export default function CertificateItem({certificate, deleteCertificate } : Read
         <div className="ml-[26px] w-[128px] text-center">
           { certificate.expiration.year > 0 && certificate.expiration.year + " year" }
           <p className="block">{ certificate.expiration.month > 0 && certificate.expiration.month + " month" }</p> 
-          <p className="block">{ certificate.expiration.day > 0 && certificate.expiration.year + " day" }</p> 
+          <p className="block">{ certificate.expiration.day > 0 && certificate.expiration.day + " day" }</p> 
         </div>
       }
       <button className="ml-[24px]" onClick={()=> {
@@ -86,8 +86,8 @@ export default function CertificateItem({certificate, deleteCertificate } : Read
     {
       isOpenConfirmDelete && 
       <ModalConfirmDelete 
-        topic={"Are you sure you want to delete Certificate template?"}
-        describe={""}
+        topic={"Delete Certificate template?"}
+        describe={"Are you sure you want to delete Certificate template?"}
         setStateOpen={setIsOpenConfirmDelete} 
         yesFunction={deleteCertificate}
         id={certificate._id}

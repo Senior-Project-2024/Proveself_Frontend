@@ -41,13 +41,15 @@ export async function middleware(request: NextRequest) {
   //     isAuthOrganization = true;
   // })
 
+  const regExpManagement = /\/organization\/management\//
+
   if(path == "/signin" && isAuthUser)
     return NextResponse.redirect(new URL('/', request.url))
 
   if(path == "/organization/signin" && isAuthOrganization)
     return NextResponse.redirect(new URL('/organization', request.url))
   
-  if( (path == "/organization/token" || path == "/organization/document" || path == "/organization/management") && !isAuthOrganization)
+  if( (path == "/organization/token" || path == "/organization/document" || regExpManagement.test(path)) && !isAuthOrganization)
     return NextResponse.redirect(new URL('/organization/signin', request.url))
   
   if( (path == "/issue-certificate" || path == "/badge" || path == "/certificate") && !isAuthUser)
@@ -67,6 +69,6 @@ export const config = {
     '/organization/signin',
     '/organization/token',
     '/organization/document',
-    '/organization/management',
+    '/organization/management/:path*',
   ],
 }

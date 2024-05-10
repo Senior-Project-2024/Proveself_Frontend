@@ -18,9 +18,7 @@ export default function Verification() {
     setDataVerify(undefined)
     setIsLoading(true)
     try{
-      console.log(inputToken)
       const { data } = await API_verify(inputToken)
-      console.log(data)
       setDataVerify(data)
       setIsLoading(false)
     }catch(err){
@@ -33,10 +31,10 @@ export default function Verification() {
     }
   }
 
-  useEffect(()=>{
-    console.log(dataVerify)
-    console.log(isLoading)
-  },[isLoading])    
+  // useEffect(()=>{
+  //   console.log(dataVerify)
+  //   console.log(isLoading)
+  // },[isLoading])    
 
   return (
     <section className="pt-[90px]">
@@ -110,7 +108,7 @@ export default function Verification() {
                           )
                         })
                         :
-                        <span> none</span>
+                        <span className="regular20"> none</span>
                       }
                     </p>
                   </div>
@@ -144,7 +142,7 @@ export default function Verification() {
                           )
                         }) 
                         :
-                        <span> none</span>
+                        <span className="regular20"> none</span>
                       }
                     </p>
                   </div>

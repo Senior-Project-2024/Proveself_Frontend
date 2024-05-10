@@ -24,9 +24,9 @@ export default function CreateCertificateTemplete() {
   const [inputSearch, setInputSearch] = useState<string>("")
   const { register, handleSubmit, watch, formState: { errors }, setValue } = useForm<certificateTemplateType>({
     defaultValues : {
-      certificateName : "Certifiacte",
-      description : "adada",
-      criteria : "adadadada",
+      // certificateName : "Certifiacte",
+      // description : "adada",
+      // criteria : "adadadada",
       dayExpired :0,
       monthExpired : 0,
       yearExpired : 0
@@ -81,6 +81,7 @@ export default function CreateCertificateTemplete() {
         setSkillState([])
         resetBadgeRequired()
         setFile(null)
+        window.location.href = "/organization/management?statusManage=certificate";
       }catch(error){
         console.log(error)
         toast.update(toastIdRef.current,{

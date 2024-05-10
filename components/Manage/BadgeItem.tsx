@@ -28,7 +28,8 @@ export default function BadgeItem({badge, deleteBadge } : Readonly<IBadgeItem>) 
     <>
       <div className="flex flex-row py-[10px] light24 self-start justify-start items-center">
         <div className="ml-[52px] flex flex-col items-center gap-1 w-[100px]">
-          <img src="/badge_crop.png" alt="badge" className="w-[88px] " />
+          {/* <img src={"/badge_crop.png"} alt="badge" className="w-[88px] " /> */}
+          <img src={badge.imageInfo.imageURL} alt="badge" className="w-[95px] h-[95px] " />
           <p className="regular14 w-[100px] truncate ">ID : {badge.id}</p>
         </div>
         <p className="ml-[62px] w-[212px] text-center">{badge.name}</p>
@@ -43,7 +44,7 @@ export default function BadgeItem({badge, deleteBadge } : Readonly<IBadgeItem>) 
           <div className="ml-[26px] w-[128px] text-center">
             { badge.expiration.year > 0 && badge.expiration.year + " year" }
             <p className="block">{ badge.expiration.month > 0 && badge.expiration.month + " month" }</p> 
-            <p className="block">{ badge.expiration.day > 0 && badge.expiration.year + " day" }</p> 
+            <p className="block">{ badge.expiration.day > 0 && badge.expiration.day + " day" }</p> 
           </div>
         }
         <button className="ml-[54px]" onClick={()=> {
@@ -72,8 +73,8 @@ export default function BadgeItem({badge, deleteBadge } : Readonly<IBadgeItem>) 
       {
         isOpenConfirmDelete && 
         <ModalConfirmDelete 
-          topic={"Are you sure you want to delete Badge template?"}
-          describe={"If learner issue badge once. This badge template will cannot delete"}
+          topic={"Delete Badge template?"}
+          describe={"Are you sure you want to delete Badge template? It may affect to your Certificate Templete"}
           setStateOpen={setIsOpenConfirmDelete} 
           yesFunction={deleteBadge}
           id = {badge.id}
