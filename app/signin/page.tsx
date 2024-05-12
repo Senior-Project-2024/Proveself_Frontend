@@ -23,8 +23,8 @@ export default function Login() {
   type ItypeConfirm = typeConfirm;
   const { register, handleSubmit, watch, formState: { errors } } = useForm<loginStateType>({
     defaultValues : {
-      email : "pathinya@gmail.com",
-      password : "Meaw1234"
+      // email : "pathinya@gmail.com",
+      // password : "Meaw1234"
     },
     resolver : yupResolver(loginSchema)
   });

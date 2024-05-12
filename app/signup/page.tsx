@@ -16,12 +16,12 @@ export default function Register(){
   const Signup = useSignup();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<registerStateType>({
     defaultValues : {
-      firstname : "Pathinya",
-      lastname : "Jongsupangpan",
-      phone: "0813457821",
-      email : "pathinya@gmail.com",
-      password : "Meaw1234",
-      confirmpassword : "Meaw1234"
+      // firstname : "Pathinya",
+      // lastname : "Jongsupangpan",
+      // phone: "0813457821",
+      // email : "pathinya@gmail.com",
+      // password : "Meaw1234",
+      // confirmpassword : "Meaw1234"
     },
     resolver : yupResolver(registerSchema)
   });

@@ -20,11 +20,11 @@ export default function RegisterOrganization(){
   const Signup = useSignup();
   const { register, handleSubmit, watch, formState: { errors } } = useForm<registerOrganizationStateType>({
     defaultValues : {
-      name : "CourseX",
-      phone: "0813457821",
-      email : "corporateX@mail.com",
-      password : "Meaw1234",
-      confirmpassword : "Meaw1234"
+      // name : "CourseX",
+      // phone: "0813457821",
+      // email : "corporateX@mail.com",
+      // password : "Meaw1234",
+      // confirmpassword : "Meaw1234"
     },
     resolver : yupResolver(registerOrganizationchema)
   });
