@@ -69,6 +69,10 @@ export default function RootLayout({children,}: {children: React.ReactNode}) {
         <meta charSet="utf-8" />
         <meta name="description" content="Blockchain-based Digital Credential Service Platform" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:image" content="/logo_no_text"/>
+        <meta property="og:image:type" content="image/png"/>
+        <meta property="og:image:width" content="1024"/>
+        <meta property="og:image:height" content="1024"/>
         <link rel="icon" href="/Server.png" />
       </head>
       <body>
