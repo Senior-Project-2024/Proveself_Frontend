@@ -38,33 +38,33 @@ export async function useSignup(){
         isClosable: true,
       })
       // call send email API
-      // try{
-      //   toastIdRefEmail.current = toast({
-      //     title: 'Sending confirm email...',
-      //     description: "Loading",
-      //     status: 'loading',
-      //     duration: 9000,
-      //     isClosable: true,
-      //   })
-      //   const resEmail = await API_sendEmail(data.email);
-      //   toast.update(toastIdRefEmail.current,{
-      //     title: 'Sending email succesful.',
-      //     description: "We've sent verify email to your email",
-      //     status: 'success',
-      //     duration: 9000,
-      //     isClosable: true,
-      //   })
-      //   router.push(`/signin?email=${data.email}&typeConfirm=default`)
-      // }catch(err){
-      //   toast.update(toastIdRefEmail.current,{
-      //     title: 'Sending email fail.' ,
-      //     description: err.response.data.message,
-      //     status: 'error',
-      //     duration: 10000,
-      //     isClosable: true,
-      //   })
-      //   router.push(`/signin?email=${data.email}&typeConfirm=sendFail`)
-      // }
+      try{
+        toastIdRefEmail.current = toast({
+          title: 'Sending confirm email...',
+          description: "Loading",
+          status: 'loading',
+          duration: 9000,
+          isClosable: true,
+        })
+        const resEmail = await API_sendEmail(data.email);
+        toast.update(toastIdRefEmail.current,{
+          title: 'Sending email succesful.',
+          description: "We've sent verify email to your email",
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+        router.push(`/signin?email=${data.email}&typeConfirm=default`)
+      }catch(err){
+        toast.update(toastIdRefEmail.current,{
+          title: 'Sending email fail.' ,
+          description: err.response.data.message,
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        })
+        router.push(`/signin?email=${data.email}&typeConfirm=sendFail`)
+      }
   
     }catch(err){
       console.log(err.response)
