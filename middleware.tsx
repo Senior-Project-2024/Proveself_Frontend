@@ -41,7 +41,7 @@ export async function middleware(request: NextRequest) {
   //     isAuthOrganization = true;
   // })
 
-  const regExpManagement = /\/organization\/management\//
+  const regExpManagement = /\/organization\/management/
 
   if(path == "/signin" && isAuthUser)
     return NextResponse.redirect(new URL('/', request.url))

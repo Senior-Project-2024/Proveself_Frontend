@@ -68,21 +68,21 @@ export default function BadgeSection() {
         allBadge?.length == 1 ?
           <div className="pt-[20px]">
             <div className="flex flex-row justify-center">
-              <Link href={"/badge/"+allBadge[0]?.id} className=" image">
-                <img src={allBadge[0]?.imageInfo?.imageURL} alt="" className="h-[400px]" />
+              <Link href={"/badge/"+allBadge[0]?.id} className="">
+                <img src={allBadge[0]?.imageInfo?.imageURL} alt="" className="w-[360px] h-[360px] " />
               </Link>
             </div>
           </div>
         :
         // If more 2 badges
-        <div className={`${allBadge.length <= 3 ? "w-[400px]" : "w-[1000px]"} `}>
+        <div className={`${allBadge.length <= 3 ? "w-[440px]" : "w-[1000px]"} `}>
           <Slider {...settings2} className="pb-[20px]">
           {
             allBadge?.map((data : any)=>{
-              return <div className="pt-[40px]" key={data.id}>
+              return <div className="pt-[40px] h-[440px]" key={data.id}>
                 <div className="flex flex-row justify-center">
-                  <Link href={"/badge/"+data.id} className=" image">
-                    <img src={data?.imageInfo?.imageURL} alt="" className="w-[313px] h-[337px]" />
+                  <Link href={"/badge/"+data.id} className="image w-[340px] h-[340px]">
+                    <img src={data?.imageInfo?.imageURL} alt="" className="w-[340px] h-[340px] " />
                   </Link>
                 </div>
               </div>

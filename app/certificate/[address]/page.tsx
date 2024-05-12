@@ -27,6 +27,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
   const [specificCertificate, setSpecificCertificate] = useState<any>();
   const [cannotFound, setCannotFound] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [windowPath, setWindowPath] = useState<string>("")
   
   const settings = {
     dots: true,
@@ -60,6 +61,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
       setCannotFound(true)
       console.log(err.response.data.message)
     })
+    setWindowPath(window.location.origin + path)
   },[])
 
   if(cannotFound)
@@ -107,10 +109,10 @@ export default function Address({params} : Readonly<{ params : { address : strin
                   data?.tokenId &&
                   <div className="" key={data.id}>
                     <div className="flex flex-col items-center gap-[10px]">
-                      <Link href={"/badge/"+data.tokenId} target="_blank" className="image">
-                        <img src={data.imageInfo.imageURL} alt="" className="w-[143px] h-[154px]" />
+                      <Link href={"/certificate/"+data.tokenId} target="_blank" className="image">
+                        <img src={data.imageInfo.imageURL} alt="" className="w-[148px] h-[148px]" />
                       </Link>
-                      <Link href={"/badge/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
+                      <Link href={"/certificate/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
                     </div>
                   </div>
                 )
@@ -127,10 +129,10 @@ export default function Address({params} : Readonly<{ params : { address : strin
                     data?.tokenId &&
                     <div className="" key={data.id}>
                       <div className="flex flex-col items-center gap-[10px]">
-                        <Link href={"/badge/"+data.tokenId} target="_blank" className="image">
-                          <img src={data.imageInfo.imageURL} alt="" className="w-[143px] h-[154px]" />
+                        <Link href={"/certificate/"+data.tokenId} target="_blank" className="image">
+                          <img src={data.imageInfo.imageURL} alt="" className="w-[148px] h-[148px]" />
                         </Link>
-                        <Link href={"/badge/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
+                        <Link href={"/certificate/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
                       </div>
                     </div>
                   )
@@ -192,7 +194,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
               <button className={`bg-white px-[14px] py-[10px] border border-[#D9D9D9] rounded-lg flex flex-row items-center gap-[12px] ${isCopied && "gap-[8px]"}
                 group-hover:bg-gray-50`}
                 onClick={()=> {
-                  navigator.clipboard.writeText(window.location.origin + path)
+                  navigator.clipboard.writeText(windowPath)
                   setIsCopied(true);
                 }}>
                 {
@@ -207,7 +209,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
             </div>
             <div className="flex flex-row gap-2 mt-[16px] mb-[12px]">
               <FacebookShareButton
-                  url={window.location.origin + path}>
+                  url={windowPath}>
                     <div className="bg-[#1877F2] py-[15px] px-[12px] hover:bg-[#0053BF]
                       flex flex-row gap-[10px] rounded-lg
                       transition-all duration-500"
@@ -217,7 +219,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
                     </div>
                 </FacebookShareButton> 
                 <LineShareButton
-                  url={window.location.origin + path}
+                  url={windowPath}
                 >
                   <div className="bg-[#00C200] py-[15px] px-[12px] hover:bg-[#028D02]
                     flex flex-row gap-[10px] rounded-lg
@@ -230,7 +232,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
             </div>
             <div className="flex flex-row gap-2 z-10">
               <TwitterShareButton
-                  url={window.location.origin + path}
+                  url={windowPath}
                 >
                   <div className="bg-[#040404] py-[15px] px-[12px] hover:bg-[#2C2C2C]
                     flex flex-row gap-[10px] rounded-lg
@@ -241,7 +243,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
                   </div>
                 </TwitterShareButton>
                 <LinkedinShareButton
-                  url={window.location.origin + path}
+                  url={windowPath}
                 >
                   <div className="bg-[#0A66C2] py-[15px] px-[12px] hover:bg-[#003163]
                     flex flex-row gap-[10px] rounded-lg
