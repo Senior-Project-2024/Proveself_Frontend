@@ -109,10 +109,10 @@ export default function Address({params} : Readonly<{ params : { address : strin
                   data?.tokenId &&
                   <div className="" key={data.id}>
                     <div className="flex flex-col items-center gap-[10px]">
-                      <Link href={"/certificate/"+data.tokenId} target="_blank" className="image">
+                      <Link href={"/badge/"+data.tokenId} target="_blank" className="image">
                         <img src={data.imageInfo.imageURL} alt="" className="w-[148px] h-[148px]" />
                       </Link>
-                      <Link href={"/certificate/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
+                      <Link href={"/badge/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
                     </div>
                   </div>
                 )
@@ -129,10 +129,10 @@ export default function Address({params} : Readonly<{ params : { address : strin
                     data?.tokenId &&
                     <div className="" key={data.id}>
                       <div className="flex flex-col items-center gap-[10px]">
-                        <Link href={"/certificate/"+data.tokenId} target="_blank" className="image">
+                        <Link href={"/badge/"+data.tokenId} target="_blank" className="image">
                           <img src={data.imageInfo.imageURL} alt="" className="w-[148px] h-[148px]" />
                         </Link>
-                        <Link href={"/certificate/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
+                        <Link href={"/badge/"+data.tokenId} target="_blank" className="w-[178px] text-center">{data.name}</Link>
                       </div>
                     </div>
                   )
