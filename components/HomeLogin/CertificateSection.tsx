@@ -69,7 +69,7 @@ export default function CertificateSection() {
         allCertificate?.length === 1 ? 
         <div className="pt-[20px]">
           <div className="flex flex-row justify-center">
-            <Link href={"/badge/" + allCertificate[0].id} className=" image">
+            <Link href={"/certificate/" + allCertificate[0].id} className=" image">
               <img src={allCertificate[0]?.imageInfo?.imageURL} alt="" className="h-[350px]" />
             </Link>
           </div>
