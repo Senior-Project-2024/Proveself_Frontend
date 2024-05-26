@@ -332,7 +332,7 @@ export default function EditCertificateTemplete({ params } : Readonly<{ params :
                     return(
                       <div className={`flex flex-col items-center ${ matcher.test(badge.name.toLowerCase()) ? "" : "hidden"}`} key={badge.id}>
                         <div className="w-full flex flex-row justify-between items-center px-[32px] py-[8px]">
-                          <img src="/badge_crop.png" alt="" className="h-[70px]" />
+                          <img src={badge.imageInfo.imageURL} alt="" className="h-[70px]" />
                           <div className="flex flex-col">                          
                             <p className="w-[287px] light20">{badge.name}</p>
                             <p className="w-[287px] light14 text-gray-100 truncate">{badge.descriptionCourse}</p>
