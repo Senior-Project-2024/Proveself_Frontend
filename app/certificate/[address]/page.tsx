@@ -271,7 +271,7 @@ export default function Address({params} : Readonly<{ params : { address : strin
                   :
                   <Copy className="stroke-white"/>
                 }
-                <p className={`${isCopiedToken && "hidden"} text-white medium20`}>Copy Address</p>
+                <p className={`${isCopiedToken && "hidden"} text-white medium20`}>Copy Token</p>
                 <p className={`${isCopiedToken ? "block" : "hidden"} text-white medium20`}>Copied!</p>
               </button>
             </div>
